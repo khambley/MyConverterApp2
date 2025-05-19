@@ -1,0 +1,9 @@
+﻿namespace MyConverterApp2;
+
+public partial class AppShell : Shell
+{
+	public AppShell()
+	{
+		InitializeComponent();
+	}
+}
