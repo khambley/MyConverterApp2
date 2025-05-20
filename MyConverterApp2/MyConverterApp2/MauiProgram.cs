@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using epj.Expander.Maui;
+using Microsoft.Extensions.Logging;
 
 namespace MyConverterApp2;
 
@@ -9,6 +10,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseExpander()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,6 +21,8 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+		// enable animations for Android & iOS
+        Expander.EnableAnimations();
 
 		return builder.Build();
 	}

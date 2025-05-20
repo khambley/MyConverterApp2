@@ -14,10 +14,21 @@
     <Color x:Key="Tertiary">#2B0B98</Color>
 
     <Color x:Key="White">White</Color>
+    <Color x:Key="OffBlack">#1f1f1f</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
+    <Color x:Key="DarkMagenta">DarkMagenta</Color>
+    <Color x:Key="LightBlue">#BDE4F9</Color>
+    <Color x:Key="DarkBlue">#3D72A3</Color>
+    <Color x:Key="MidnightBlue">#112133</Color>
+    <Color x:Key="LightGreen">LightGreen</Color>
+    <Color x:Key="LightSeaGreen">LightSeaGreen</Color>
+    <Color x:Key="DarkGreen">DarkGreen</Color>
+
+    <Color x:Key="DarkBackground">#112133</Color>
+    <Color x:Key="LightOnDarkBackground">#C3C3C3</Color>
+    <Color x:Key="LightBackground">#F2F2F2</Color>
+    <Color x:Key="DarkOnLightBackground">#112133</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
