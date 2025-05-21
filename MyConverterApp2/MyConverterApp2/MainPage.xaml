@@ -2,77 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:maui="clr-namespace:epj.Expander.Maui;assembly=epj.Expander.Maui"
+             xmlns:controls="clr-namespace:MyConverterApp2.Controls"
              x:Class="MyConverterApp2.MainPage">
 
     <ScrollView>
         <VerticalStackLayout x:Name="AccordionLayout" 
                              Spacing="2">
+            <!-- Expander 1 -->
+            <controls:ExpanderView x:Name="Expander1"
+                                   HeaderText="Expander 1"
+                                   HeaderBackgroundColor="LightGray">
 
-            <maui:Expander Animated="True" HeaderTapped="Expander_OnHeaderTapped">
-                <!--Expander Header-->
-                <maui:Expander.HeaderContent>
-                    <Grid BackgroundColor="LightGray"
-                          Padding="20,0,0,0"
-                          MinimumHeightRequest="60">
+                   <controls:ExpanderView.ExpanderContent>
+                        <Label Text="This is the content of Expander 1"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Start" />
+                    </controls:ExpanderView.ExpanderContent>    
+                                
+            </controls:ExpanderView>
+            <!-- Expander 2 -->
+            <controls:ExpanderView x:Name="Expander2"
+                                   HeaderText="Expander 2"
+                                   HeaderBackgroundColor="LightGreen">
 
-                        <Label Text="Expander 1"
-                           FontSize="Medium"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Center" />
-
-                        <Label x:Name="Expander1_DownArrow_Collapsed"
-                               Style="{StaticResource ExpanderDownArrow}"
-                               IsVisible="False" />
-
-                        <Label x:Name="Expander1_UpArrow_Expanded"
-                               Style="{StaticResource ExpanderUpArrow}"
-                               IsVisible="True" />
-                    </Grid> 
-                </maui:Expander.HeaderContent>
-
-                <!--Expander Content-->
-                <Grid Margin="6,0"
-                      HeightRequest="200">
-                    <Label Text="This is the content of an expander!"
-                           VerticalOptions="Start"
-                           HorizontalOptions="Start" />
-                </Grid>
-
-            </maui:Expander>
-
-            <maui:Expander Animated="True" HeaderTapped="Expander_OnHeaderTapped">
-                <!--Expander Header-->
-                <maui:Expander.HeaderContent>
-                    <Grid BackgroundColor="LightBlue"
-                          Padding="20,0,0,0"
-                          MinimumHeightRequest="60">
-
-                        <Label Text="Expander 2"
-                           FontSize="Medium"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Center" />
-
-                        <Label x:Name="Expander2_DownArrow_Collapsed"
-                               Style="{StaticResource ExpanderDownArrow}"
-                               IsVisible="False" />
-
-                        <Label x:Name="Expander2_UpArrow_Expanded"
-                               Style="{StaticResource ExpanderUpArrow}"
-                               IsVisible="True" />
-
-                       
-                    </Grid> 
-                </maui:Expander.HeaderContent>
-
-                <!--Expander Content-->
-                <Grid Margin="6,0"
-                      HeightRequest="200">
-                    <Label Text="This is the content of expander 2"
-                           VerticalOptions="Start"
-                           HorizontalOptions="Start" />
-                </Grid>
-
-            </maui:Expander>
+                   <controls:ExpanderView.ExpanderContent>
+                    <VerticalStackLayout>
+                        <Label Text="This is the content of Expander 2"
+                               VerticalOptions="Start"
+                               HorizontalOptions="Center" />                     
+                    </VerticalStackLayout>
+                    
+                    </controls:ExpanderView.ExpanderContent>                
+            </controls:ExpanderView>
         </VerticalStackLayout>
     </ScrollView>
 
