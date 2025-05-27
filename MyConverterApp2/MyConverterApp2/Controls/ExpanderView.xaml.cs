@@ -11,12 +11,19 @@ public partial class ExpanderView : ContentView
 	public static readonly BindableProperty ExpanderContentProperty =
 		BindableProperty.Create(nameof(ExpanderContent), typeof(View), typeof(ExpanderView), propertyChanged: OnContentChanged);
 
+	public static readonly BindableProperty HeaderIconProperty =
+		BindableProperty.Create(nameof(HeaderIcon), typeof(string), typeof(ExpanderView), string.Empty);
+
 	public string HeaderText
 	{
 		get => (string)GetValue(HeaderTextProperty);
 		set => SetValue(HeaderTextProperty, value);
 	}
-
+	public string HeaderIcon
+	{
+		get => (string)GetValue(HeaderIconProperty);
+		set => SetValue(HeaderIconProperty, value);
+	}
 	public Color HeaderBackgroundColor
 	{
 		get => (Color)GetValue(HeaderBackgroundColorProperty);

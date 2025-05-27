@@ -5,13 +5,13 @@
              xmlns:controls="clr-namespace:MyConverterApp2.Controls"
              x:Class="MyConverterApp2.MainPage">
 
-    <ScrollView>
         <VerticalStackLayout x:Name="AccordionLayout" 
                              Spacing="2">
             <!-- Expander 1 -->
-            <controls:ExpanderView x:Name="Expander1"
-                                   HeaderText="Expander 1"
-                                   HeaderBackgroundColor="LightGray">
+            <controls:ExpanderView x:Name="Currency"
+                                   HeaderText="Currency"
+                                   HeaderIcon="&#x24;"
+                                   HeaderBackgroundColor="LightSeaGreen">
 
                    <controls:ExpanderView.ExpanderContent>
                         <Label Text="This is the content of Expander 1"
@@ -21,9 +21,10 @@
                                 
             </controls:ExpanderView>
             <!-- Expander 2 -->
-            <controls:ExpanderView x:Name="Expander2"
-                                   HeaderText="Expander 2"
-                                   HeaderBackgroundColor="LightGreen">
+            <controls:ExpanderView x:Name="Time"
+                                   HeaderText="Time"
+                                   HeaderIcon="&#xf017;"
+                                   HeaderBackgroundColor="LightBlue">
 
                    <controls:ExpanderView.ExpanderContent>
                     <VerticalStackLayout>
@@ -35,6 +36,5 @@
                     </controls:ExpanderView.ExpanderContent>                
             </controls:ExpanderView>
         </VerticalStackLayout>
-    </ScrollView>
 
 </ContentPage>
