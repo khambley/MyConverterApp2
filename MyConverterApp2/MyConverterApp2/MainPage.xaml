@@ -14,9 +14,57 @@
                                    HeaderBackgroundColor="LightSeaGreen">
 
                    <controls:ExpanderView.ExpanderContent>
-                        <Label Text="This is the content of Expander 1"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Start" />
+                        <VerticalStackLayout Spacing="10" Padding="20">
+                            <!-- Result Display -->
+                            <HorizontalStackLayout>
+                                <Label Text="1 Celsius = "
+                                       FontSize="Small"
+                                       FontAttributes="Bold" />
+
+                                <Label Text="33.8 Fahrenheit"
+                                    FontSize="Small"
+                                    FontAttributes="Bold" />
+                            </HorizontalStackLayout>
+                            
+                            <!-- First Row -->
+                            <Grid ColumnSpacing="10" ColumnDefinitions="*, 2*">
+                                <Entry Grid.Column="0"
+                                    Placeholder="Enter value"
+                                    Keyboard="Numeric"
+                                    HorizontalOptions="FillAndExpand" />
+                                <Picker Grid.Column="1"
+                                        Title="Select unit"
+                                        HorizontalOptions="FillAndExpand">
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Celsius</x:String>
+                                            <x:String>Fahrenheit</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Grid>
+
+                            <!-- Second Row -->
+                            <Grid ColumnSpacing="10" ColumnDefinitions="*, 2*">
+                                <Entry Grid.Column="0"
+                                    Placeholder="Converted value"
+                                    IsReadOnly="True"
+                                    HorizontalOptions="FillAndExpand" />
+                                <Picker Grid.Column="1"
+                                        Title="Select unit"
+                                        HorizontalOptions="FillAndExpand">
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Celsius</x:String>
+                                            <x:String>Fahrenheit</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Grid>
+
+                        </VerticalStackLayout>
+
+
                     </controls:ExpanderView.ExpanderContent>    
                                 
             </controls:ExpanderView>

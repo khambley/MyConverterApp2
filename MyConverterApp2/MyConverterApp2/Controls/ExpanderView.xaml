@@ -11,9 +11,9 @@
             <Grid BackgroundColor="{Binding HeaderBackgroundColor, Source={x:Reference this}}"
                   Padding="20,0,0,0"
                   MinimumHeightRequest="60">
-                <Grid ColumnDefinitions="40,200">
+                <Grid ColumnDefinitions="40*,200*,*">
                     <Label Grid.Column="0"
-                            Text="{Binding HeaderIcon, Source={x:Reference this}}" 
+                           Text="{Binding HeaderIcon, Source={x:Reference this}}" 
                            FontFamily="FontAwesomeSolid" 
                            FontSize="Medium" 
                            VerticalOptions="Center" 
@@ -22,7 +22,7 @@
                            Padding="0,0,10,0" 
                            FontAttributes="Bold" />
                     <Label Grid.Column="1"
-                            Text="{Binding HeaderText, Source={x:Reference this}}"
+                           Text="{Binding HeaderText, Source={x:Reference this}}"
                            FontSize="Medium"
                            FontFamily="OpenSansBold"
                            VerticalOptions="Center" />
