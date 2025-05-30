@@ -10,14 +10,37 @@ namespace MyConverterApp2.Models
     {
         [ObservableProperty]
         string? unitName;
+
         [ObservableProperty]
-        string? sourceUnit;
+        string? unitValue;
+
         [ObservableProperty]
-        string? targetUnit;
+        string? fromUnit;
+
+        [ObservableProperty]
+        string? toUnit;
+
+        [ObservableProperty]
+        string? selectedFromUnit;
+
+        [ObservableProperty]
+        string? selectedToUnit;
+
         [ObservableProperty]
         string? sourceValue;
+
         [ObservableProperty]
         string? targetValue;
+
+        [ObservableProperty]
+        private CurrencyRate? currencyRate;
+
+        [ObservableProperty]
+        string? convertionRate;
+
+        [ObservableProperty]
+        string? conversionResult;
+
         
 
 

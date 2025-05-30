@@ -1,13 +1,17 @@
 ﻿using epj.Expander.Maui;
+using MyConverterApp2.ViewModels;
 
 namespace MyConverterApp2;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    readonly MainViewModel viewModel;
+    public MainPage(MainViewModel viewModel)
+    {
+        this.viewModel = viewModel;
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 	 protected override void OnAppearing()
     {
         base.OnAppearing();

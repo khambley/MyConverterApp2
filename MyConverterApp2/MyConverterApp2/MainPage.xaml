@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:maui="clr-namespace:epj.Expander.Maui;assembly=epj.Expander.Maui"
              xmlns:controls="clr-namespace:MyConverterApp2.Controls"
+             xmlns:converters="clr-namespace:MyConverterApp2.Converters"
+             xmlns:vm="clr-namespace:MyConverterApp2.ViewModels"
+             x:DataType="vm:MainViewModel"
              x:Class="MyConverterApp2.MainPage">
+    <ContentPage.Resources>
+        <converters:CurrencySignConverter x:Key="currencySignConverter" />
+    </ContentPage.Resources>
 
         <VerticalStackLayout x:Name="AccordionLayout" 
                              Spacing="2">
@@ -17,51 +23,71 @@
                         <VerticalStackLayout Spacing="10" Padding="20">
                             <!-- Result Display -->
                             <HorizontalStackLayout>
-                                <Label Text="1 Celsius = "
+                                <Label x:Name="resultLabel"
                                        FontSize="Small"
-                                       FontAttributes="Bold" />
-
-                                <Label Text="33.8 Fahrenheit"
-                                    FontSize="Small"
-                                    FontAttributes="Bold" />
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,0,0,15"
+                                       IsVisible="{Binding IsResultLabelVisible}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}" />
+                                                <Span Text="{Binding Unit.UnitValue, StringFormat='{0:F2}'}" />
+                                                <Span Text=" = " />
+                                                <Span Text="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}" />
+                                                <Span Text="{Binding Unit.ConversionResult, StringFormat='{0:F2}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                             </HorizontalStackLayout>
                             
-                            <!-- First Row -->
-                            <Grid ColumnSpacing="10" ColumnDefinitions="*, 2*">
-                                <Entry Grid.Column="0"
-                                    Placeholder="Enter value"
-                                    Keyboard="Numeric"
-                                    HorizontalOptions="FillAndExpand" />
-                                <Picker Grid.Column="1"
-                                        Title="Select unit"
-                                        HorizontalOptions="FillAndExpand">
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>Celsius</x:String>
-                                            <x:String>Fahrenheit</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
-                                </Picker>
-                            </Grid>
+                            <!-- First Row - Source-->
+                            <Grid ColumnSpacing="10" ColumnDefinitions="*,*" RowDefinitions="*,*,*">
+                                <Entry x:Name="unitValue"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="2"
+                                       Grid.Row="0"
+                                       Placeholder="Enter value to convert"
+                                       Keyboard="Numeric"
+                                       Text="{Binding Unit.UnitValue}"
+                                       HorizontalOptions="Fill"
+                                       ClearButtonVisibility="WhileEditing" />
 
-                            <!-- Second Row -->
-                            <Grid ColumnSpacing="10" ColumnDefinitions="*, 2*">
-                                <Entry Grid.Column="0"
-                                    Placeholder="Converted value"
-                                    IsReadOnly="True"
-                                    HorizontalOptions="FillAndExpand" />
-                                <Picker Grid.Column="1"
-                                        Title="Select unit"
-                                        HorizontalOptions="FillAndExpand">
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>Celsius</x:String>
-                                            <x:String>Fahrenheit</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
+                                <Picker x:Name="fromUnitPicker"
+                                        Grid.Column="0"
+                                        Grid.Row="1"
+                                        Title="From"
+                                        HorizontalOptions="Fill"
+                                        ItemsSource="{Binding BaseNames}"
+                                        SelectedItem="{Binding Unit.SelectedFromUnit}">
                                 </Picker>
-                            </Grid>
 
+                                <Picker x:Name="toUnitPicker"
+                                        Grid.Column="1"
+                                        Grid.Row="1"
+                                        Title="To"
+                                        HorizontalOptions="Fill"
+                                        ItemsSource="{Binding BaseNames}"
+                                        SelectedItem="{Binding Unit.SelectedToUnit}">
+                                </Picker>
+                                
+                                    <Button x:Name="convertButton"
+                                        Grid.Column="0"
+                                        Grid.Row="2"
+                                        Text="Convert"
+                                        Command="{Binding GetRatesCommand}"
+                                        Margin="0,10,0,15"
+                                        FontSize="16" />
+                                    <Button x:Name="clearButton"
+                                        Grid.Column="1"
+                                        Grid.Row="2"
+                                        Text="Reset"
+                                        BackgroundColor="LightSeaGreen"
+                                        Command="{Binding ClearResultCommand}"
+                                        Margin="0,10,0,15"
+                                        FontSize="16" />
+                                
+                                
+                            </Grid>
                         </VerticalStackLayout>
 
 
