@@ -20,25 +20,42 @@
                                    HeaderBackgroundColor="LightSeaGreen">
 
                    <controls:ExpanderView.ExpanderContent>
-                        <VerticalStackLayout Spacing="10" Padding="20">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10" Padding="10">
                             <!-- Result Display -->
-                            <HorizontalStackLayout>
+                            <VerticalStackLayout>
                                 <Label x:Name="resultLabel"
-                                       FontSize="Small"
+                                       FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
                                        HorizontalTextAlignment="Center"
-                                       Margin="0,0,0,15"
+                                       Margin="0,0,0,10"
                                        IsVisible="{Binding IsResultLabelVisible}">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <Span Text="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}" />
                                                 <Span Text="{Binding Unit.UnitValue, StringFormat='{0:F2}'}" />
-                                                <Span Text=" = " />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="&#xf063;"
+                                           FontFamily="FontAwesomeSolid"
+                                           FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                                           TextColor="Black"
+                                           Margin="0,0,0,10"
+                                           HorizontalOptions="Center"
+                                           IsVisible="{Binding IsResultLabelVisible}" />
+                                    <Label x:Name="resultLabel2"
+                                       FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                                       HorizontalTextAlignment="Center"
+                                       Margin="0,0,0,15"
+                                       IsVisible="{Binding IsResultLabelVisible}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
                                                 <Span Text="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}" />
                                                 <Span Text="{Binding Unit.ConversionResult, StringFormat='{0:F2}'}" />
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                            </HorizontalStackLayout>
+                            </VerticalStackLayout>
                             
                             <!-- First Row - Source-->
                             <Grid ColumnSpacing="10" ColumnDefinitions="*,*" RowDefinitions="*,*,*">
@@ -69,29 +86,10 @@
                                         ItemsSource="{Binding BaseNames}"
                                         SelectedItem="{Binding Unit.SelectedToUnit}">
                                 </Picker>
-                                
-                                    <Button x:Name="convertButton"
-                                        Grid.Column="0"
-                                        Grid.Row="2"
-                                        Text="Convert"
-                                        Command="{Binding GetRatesCommand}"
-                                        Margin="0,10,0,15"
-                                        FontSize="16" />
-                                    <Button x:Name="clearButton"
-                                        Grid.Column="1"
-                                        Grid.Row="2"
-                                        Text="Reset"
-                                        BackgroundColor="LightSeaGreen"
-                                        Command="{Binding ClearResultCommand}"
-                                        Margin="0,10,0,15"
-                                        FontSize="16" />
-                                
-                                
                             </Grid>
                         </VerticalStackLayout>
-
-
-                    </controls:ExpanderView.ExpanderContent>    
+                    </ScrollView>
+                </controls:ExpanderView.ExpanderContent>    
                                 
             </controls:ExpanderView>
             <!-- Expander 2 -->

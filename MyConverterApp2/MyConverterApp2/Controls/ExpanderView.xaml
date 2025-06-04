@@ -37,7 +37,7 @@
             </Grid>
         </maui:Expander.HeaderContent>
             
-            <Grid x:Name="ExpanderContentContainer" HeightRequest="260" Padding="10"/>
+            <Grid x:Name="ExpanderContentContainer" MinimumHeightRequest="300" Padding="10"/>
        
     </maui:Expander>
 </ContentView>

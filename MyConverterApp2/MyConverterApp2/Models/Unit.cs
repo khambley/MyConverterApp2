@@ -41,6 +41,24 @@ namespace MyConverterApp2.Models
         [ObservableProperty]
         string? conversionResult;
 
+        // ViewModel callback
+        public Func<Task>? AutoConvertCallback { get; set; }
+
+        partial void OnSelectedFromUnitChanged(string value)
+        {
+            AutoConvertCallback?.Invoke();
+        }
+
+        partial void OnSelectedToUnitChanged(string value)
+        {
+            AutoConvertCallback?.Invoke();
+        }
+
+        partial void OnUnitValueChanged(string value)
+        {
+            AutoConvertCallback?.Invoke();
+        }
+
         
 
 

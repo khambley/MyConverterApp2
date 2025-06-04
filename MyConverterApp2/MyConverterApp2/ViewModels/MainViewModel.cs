@@ -28,7 +28,19 @@ namespace MyConverterApp2.ViewModels
             this.rateService = rateService;
             SetBaseNames();
             IsResultLabelVisible = false;
+
             Unit = new Unit();
+            Unit.AutoConvertCallback = AutoConvertAsync;
+        }
+
+        private async Task AutoConvertAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(Unit?.SelectedFromUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.SelectedToUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.UnitValue))
+            {
+                await GetRatesAsync();
+            }
         }
         private void SetBaseNames()
         {
