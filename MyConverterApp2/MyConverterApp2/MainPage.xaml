@@ -46,11 +46,21 @@
                                    HeaderBackgroundColor="LightBlue">
 
                    <controls:ExpanderView.ExpanderContent>
-                    <VerticalStackLayout>
-                        <Label Text="This is the content of Expander 2"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Center" />                     
-                    </VerticalStackLayout>
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="5" Padding="5">
+                            
+                            <controls:ConverterResultView IsResultVisible="{Binding IsLengthResultLabelVisible}"
+                                                          FromSymbol="{Binding Unit.LengthSelectedFromUnit}"
+                                                          UnitValue="{Binding Unit.LengthUnitValue, Mode=TwoWay}"
+                                                          ToSymbol="{Binding Unit.LengthSelectedToUnit}"
+                                                          ConversionResult="{Binding Unit.LengthConversionResult}" />
+
+                            <controls:ConverterEntryView UnitNames="{Binding LengthBaseNames}"
+                                                         SelectedFromUnit="{Binding Unit.LengthSelectedFromUnit,Mode=TwoWay}"
+                                                         SelectedToUnit="{Binding Unit.LengthSelectedToUnit, Mode=TwoWay}"
+                                                         UnitValue="{Binding Unit.LengthUnitValue,Mode=TwoWay}" />
+                        </VerticalStackLayout>
+                    </ScrollView>
                     
                     </controls:ExpanderView.ExpanderContent>                
             </controls:ExpanderView>

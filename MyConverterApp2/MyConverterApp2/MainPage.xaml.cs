@@ -11,6 +11,7 @@ public partial class MainPage : ContentPage
         this.viewModel = viewModel;
         InitializeComponent();
         BindingContext = viewModel;
+        
     }
 	 protected override void OnAppearing()
     {

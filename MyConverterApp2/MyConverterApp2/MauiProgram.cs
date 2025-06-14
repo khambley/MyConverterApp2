@@ -33,6 +33,7 @@ public static class MauiProgram
 	{
 		// Services
 		mauiAppBuilder.Services.AddSingleton<Services.IRateService>((serviceProvider) => new Services.RateService());
+		mauiAppBuilder.Services.AddSingleton<Services.ILengthService>((serviceProvider) => new Services.LengthService());
 
 		// ViewModels
 		mauiAppBuilder.Services.AddTransient<ViewModels.MainViewModel>();

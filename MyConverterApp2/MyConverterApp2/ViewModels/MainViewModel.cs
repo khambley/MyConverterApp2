@@ -13,25 +13,42 @@ namespace MyConverterApp2.ViewModels
     public partial class MainViewModel : ViewModelBase
     {
         private readonly IRateService rateService;
+        private readonly ILengthService lengthService;
 
         [ObservableProperty]
         private Unit? unit;
 
         [ObservableProperty]
+        ObservableCollection<string>? unitTypes;
+
+        [ObservableProperty]
+        string? selectedUnitType;
+
+        [ObservableProperty]
         ObservableCollection<string>? currencyBaseNames;
-        
+
+        [ObservableProperty]
+        ObservableCollection<string>? lengthBaseNames;
+
         [ObservableProperty]
         bool isResultLabelVisible;
 
+        [ObservableProperty]
+        bool isLengthResultLabelVisible;
 
-        public MainViewModel(IRateService rateService)
+
+        public MainViewModel(IRateService rateService, ILengthService lengthService)
         {
             this.rateService = rateService;
+            this.lengthService = lengthService;
             SetCurrencyBaseNames();
+            SetLengthBaseNames();
             IsResultLabelVisible = false;
+            IsLengthResultLabelVisible = false;
 
             Unit = new Unit();
             Unit.AutoConvertCallback = AutoConvertAsync;
+            Unit.LengthAutoConvertCallback = LengthAutoConvertAsync;
         }
 
         private async Task AutoConvertAsync()
@@ -43,9 +60,23 @@ namespace MyConverterApp2.ViewModels
                 await GetRatesAsync();
             }
         }
+        private async Task LengthAutoConvertAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(Unit?.LengthSelectedFromUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.LengthSelectedToUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.LengthUnitValue))
+            {
+                await ConvertLength();
+            }
+        }
         private void SetCurrencyBaseNames()
         {
             CurrencyBaseNames = rateService.SetBaseNames();
+        }
+
+        private void SetLengthBaseNames()
+        {
+            LengthBaseNames = lengthService.SetBaseNames();
         }
         public string SplitBaseString(string s)
         {
@@ -61,21 +92,22 @@ namespace MyConverterApp2.ViewModels
             Unit.SelectedToUnit = "";
             IsResultLabelVisible = false;
         }
+
         [RelayCommand]
         public async Task GetRatesAsync()
-		{
+        {
             var newBaseFrom = SplitBaseString(Unit?.SelectedFromUnit ?? "");
 
             Unit.CurrencyRate = await rateService.GetRates(newBaseFrom ?? "");
 
-            if(Unit.CurrencyRate != null)
+            if (Unit.CurrencyRate != null)
             {
                 await ConvertRate();
             }
             else
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Currency Rate cannot be null", "OK");
-            }            
+            }
         }
 
         public async Task ConvertRate()
@@ -119,6 +151,33 @@ namespace MyConverterApp2.ViewModels
             }
             Unit.ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
             IsResultLabelVisible = true;
+        }
+
+        public async Task ConvertLength()
+        {
+
+            decimal meter = 1609.344M;
+            decimal kilometer = 1.609344M;
+            decimal decimeter = 16093.44M;
+
+            if (Unit?.LengthSelectedFromUnit?.ToLower() == "mile")
+            {
+                if (Unit?.LengthSelectedToUnit?.ToLower() == "meter")
+                {
+                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * meter).ToString("F2");
+                    IsLengthResultLabelVisible = true;
+                }
+                if (Unit?.LengthSelectedToUnit?.ToLower() == "kilometer")
+                {
+                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * kilometer).ToString("F2");
+                    IsLengthResultLabelVisible = true;
+                }
+                if (Unit?.LengthSelectedToUnit?.ToLower() == "decimeter")
+                {
+                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * decimeter).ToString("F2");
+                    IsLengthResultLabelVisible = true;
+                }
+            }
         }
     }
 }
