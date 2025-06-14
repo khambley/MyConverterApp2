@@ -24,8 +24,8 @@
                         <VerticalStackLayout Spacing="10" Padding="10">
                             <!-- Result Display -->
                             <VerticalStackLayout>
-                                <Label x:Name="resultLabel"
-                                       FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                                <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                                       FontFamily="OpenSansBold"
                                        HorizontalTextAlignment="Center"
                                        Margin="0,0,0,10"
                                        IsVisible="{Binding IsResultLabelVisible}">
@@ -43,8 +43,7 @@
                                            Margin="0,0,0,10"
                                            HorizontalOptions="Center"
                                            IsVisible="{Binding IsResultLabelVisible}" />
-                                    <Label x:Name="resultLabel2"
-                                       FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                                    <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
                                        HorizontalTextAlignment="Center"
                                        Margin="0,0,0,15"
                                        IsVisible="{Binding IsResultLabelVisible}">

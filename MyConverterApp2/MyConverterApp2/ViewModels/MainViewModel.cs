@@ -19,6 +19,7 @@ namespace MyConverterApp2.ViewModels
 
         [ObservableProperty]
         ObservableCollection<string>? baseNames;
+        
         [ObservableProperty]
         bool isResultLabelVisible;
 
