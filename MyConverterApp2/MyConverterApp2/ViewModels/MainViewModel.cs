@@ -18,7 +18,7 @@ namespace MyConverterApp2.ViewModels
         private Unit? unit;
 
         [ObservableProperty]
-        ObservableCollection<string>? baseNames;
+        ObservableCollection<string>? currencyBaseNames;
         
         [ObservableProperty]
         bool isResultLabelVisible;
@@ -27,7 +27,7 @@ namespace MyConverterApp2.ViewModels
         public MainViewModel(IRateService rateService)
         {
             this.rateService = rateService;
-            SetBaseNames();
+            SetCurrencyBaseNames();
             IsResultLabelVisible = false;
 
             Unit = new Unit();
@@ -43,9 +43,9 @@ namespace MyConverterApp2.ViewModels
                 await GetRatesAsync();
             }
         }
-        private void SetBaseNames()
+        private void SetCurrencyBaseNames()
         {
-            BaseNames = rateService.SetBaseNames();
+            CurrencyBaseNames = rateService.SetBaseNames();
         }
         public string SplitBaseString(string s)
         {

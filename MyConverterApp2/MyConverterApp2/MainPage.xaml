@@ -30,7 +30,7 @@
                                                           ConversionResult="{Binding Unit.ConversionResult}" />
                             
                             <controls:ConverterEntryView UnitName="{Binding Unit.UnitName}"
-                                                    UnitNames="{Binding BaseNames}"
+                                                    UnitNames="{Binding CurrencyBaseNames}"
                                                     SelectedFromUnit="{Binding Unit.SelectedFromUnit, Mode=TwoWay}"
                                                     SelectedToUnit="{Binding Unit.SelectedToUnit, Mode=TwoWay}"
                                                     UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}" />
