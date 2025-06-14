@@ -23,40 +23,11 @@
                     <ScrollView>
                         <VerticalStackLayout Spacing="5" Padding="5">
                             <!-- Result Display -->
-                            <VerticalStackLayout>
-                                <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                       FontFamily="OpenSansBold"
-                                       HorizontalTextAlignment="Center"
-                                       Margin="0,0,0,5"
-                                       IsVisible="{Binding IsResultLabelVisible}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}" />
-                                                <Span Text="{Binding Unit.UnitValue, StringFormat='{0:F2}'}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <!-- Down Arrow Icon -->
-                                    <Label Text="&#xf063;"
-                                           FontFamily="FontAwesomeSolid"
-                                           FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                           TextColor="Black"
-                                           Margin="0,0,0,5"
-                                           HorizontalOptions="Center"
-                                           IsVisible="{Binding IsResultLabelVisible}" />
-
-                                    <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                       HorizontalTextAlignment="Center"
-                                       Margin="0,0,0,5"
-                                       IsVisible="{Binding IsResultLabelVisible}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}" />
-                                                <Span Text="{Binding Unit.ConversionResult, StringFormat='{0:F2}'}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                            </VerticalStackLayout>
+                            <controls:ConverterResultView IsResultVisible="{Binding IsResultLabelVisible}"
+                                                          FromSymbol="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}"
+                                                          UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}"
+                                                          ToSymbol="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}"
+                                                          ConversionResult="{Binding Unit.ConversionResult}" />
                             
                             <controls:ConverterEntryView UnitName="{Binding Unit.UnitName}"
                                                     UnitNames="{Binding BaseNames}"
