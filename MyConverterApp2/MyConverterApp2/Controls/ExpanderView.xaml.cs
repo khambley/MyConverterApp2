@@ -1,3 +1,5 @@
+using epj.Expander.Maui;
+
 namespace MyConverterApp2.Controls;
 
 public partial class ExpanderView : ContentView
@@ -14,6 +16,7 @@ public partial class ExpanderView : ContentView
 	public static readonly BindableProperty HeaderIconProperty =
 		BindableProperty.Create(nameof(HeaderIcon), typeof(string), typeof(ExpanderView), string.Empty);
 
+	
 	public string HeaderText
 	{
 		get => (string)GetValue(HeaderTextProperty);
@@ -48,8 +51,9 @@ public partial class ExpanderView : ContentView
 		}
 	}
 	private void OnHeaderTapped(object sender, EventArgs e)
-    {
-        UpArrow.IsVisible = !UpArrow.IsVisible;
-        DownArrow.IsVisible = !DownArrow.IsVisible;
-    }
+	{
+	    UpArrow.IsVisible = !UpArrow.IsVisible;
+	    DownArrow.IsVisible = !DownArrow.IsVisible;
+	}
+	
 }

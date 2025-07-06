@@ -15,10 +15,7 @@ namespace MyConverterApp2.Models
         string? unitValue;
 
         [ObservableProperty]
-        string? fromUnit;
-
-        [ObservableProperty]
-        string? toUnit;
+        string? lengthUnitValue;
 
         [ObservableProperty]
         string? selectedFromUnit;
@@ -27,10 +24,10 @@ namespace MyConverterApp2.Models
         string? selectedToUnit;
 
         [ObservableProperty]
-        string? sourceValue;
+        string? lengthSelectedFromUnit;
 
         [ObservableProperty]
-        string? targetValue;
+        string? lengthSelectedToUnit;
 
         [ObservableProperty]
         private CurrencyRate? currencyRate;
@@ -41,8 +38,12 @@ namespace MyConverterApp2.Models
         [ObservableProperty]
         string? conversionResult;
 
-        // ViewModel callback
+        [ObservableProperty]
+        string? lengthConversionResult;
+
+        // ViewModel currency callback
         public Func<Task>? AutoConvertCallback { get; set; }
+       
 
         partial void OnSelectedFromUnitChanged(string value)
         {
@@ -58,6 +59,25 @@ namespace MyConverterApp2.Models
         {
             AutoConvertCallback?.Invoke();
         }
+
+        // ViewModel length callback
+        public Func<Task>? LengthAutoConvertCallback { get; set; }
+        partial void OnLengthSelectedFromUnitChanged(string value)
+        {
+            LengthAutoConvertCallback?.Invoke();
+        }
+
+        partial void OnLengthSelectedToUnitChanged(string value)
+        {
+            LengthAutoConvertCallback?.Invoke();
+        }
+
+        partial void OnLengthUnitValueChanged(string value)
+        {
+            LengthAutoConvertCallback?.Invoke();
+        }
+
+
 
         
 

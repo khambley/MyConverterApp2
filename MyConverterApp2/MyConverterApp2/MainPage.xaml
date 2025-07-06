@@ -21,88 +21,51 @@
 
                    <controls:ExpanderView.ExpanderContent>
                     <ScrollView>
-                        <VerticalStackLayout Spacing="10" Padding="10">
+                        <VerticalStackLayout Spacing="5" Padding="5">
                             <!-- Result Display -->
-                            <VerticalStackLayout>
-                                <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                       FontFamily="OpenSansBold"
-                                       HorizontalTextAlignment="Center"
-                                       Margin="0,0,0,10"
-                                       IsVisible="{Binding IsResultLabelVisible}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}" />
-                                                <Span Text="{Binding Unit.UnitValue, StringFormat='{0:F2}'}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Text="&#xf063;"
-                                           FontFamily="FontAwesomeSolid"
-                                           FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                           TextColor="Black"
-                                           Margin="0,0,0,10"
-                                           HorizontalOptions="Center"
-                                           IsVisible="{Binding IsResultLabelVisible}" />
-                                    <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
-                                       HorizontalTextAlignment="Center"
-                                       Margin="0,0,0,15"
-                                       IsVisible="{Binding IsResultLabelVisible}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}" />
-                                                <Span Text="{Binding Unit.ConversionResult, StringFormat='{0:F2}'}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                            </VerticalStackLayout>
+                            <controls:ConverterResultView IsResultVisible="{Binding IsResultLabelVisible}"
+                                                          FromSymbol="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}"
+                                                          UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}"
+                                                          ToSymbol="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}"
+                                                          ConversionResult="{Binding Unit.ConversionResult}" />
                             
-                            <!-- First Row - Source-->
-                            <Grid ColumnSpacing="10" ColumnDefinitions="*,*" RowDefinitions="*,*,*">
-                                <Entry x:Name="unitValue"
-                                       Grid.Column="0"
-                                       Grid.ColumnSpan="2"
-                                       Grid.Row="0"
-                                       Placeholder="Enter value to convert"
-                                       Keyboard="Numeric"
-                                       Text="{Binding Unit.UnitValue}"
-                                       HorizontalOptions="Fill"
-                                       ClearButtonVisibility="WhileEditing" />
-
-                                <Picker x:Name="fromUnitPicker"
-                                        Grid.Column="0"
-                                        Grid.Row="1"
-                                        Title="From"
-                                        HorizontalOptions="Fill"
-                                        ItemsSource="{Binding BaseNames}"
-                                        SelectedItem="{Binding Unit.SelectedFromUnit}">
-                                </Picker>
-
-                                <Picker x:Name="toUnitPicker"
-                                        Grid.Column="1"
-                                        Grid.Row="1"
-                                        Title="To"
-                                        HorizontalOptions="Fill"
-                                        ItemsSource="{Binding BaseNames}"
-                                        SelectedItem="{Binding Unit.SelectedToUnit}">
-                                </Picker>
-                            </Grid>
+                            <controls:ConverterEntryView UnitName="{Binding Unit.UnitName}"
+                                                    UnitNames="{Binding CurrencyBaseNames}"
+                                                    SelectedFromUnit="{Binding Unit.SelectedFromUnit, Mode=TwoWay}"
+                                                    SelectedToUnit="{Binding Unit.SelectedToUnit, Mode=TwoWay}"
+                                                    UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}" />
+                                                    
                         </VerticalStackLayout>
                     </ScrollView>
                 </controls:ExpanderView.ExpanderContent>    
                                 
             </controls:ExpanderView>
             <!-- Expander 2 -->
-            <controls:ExpanderView x:Name="Time"
-                                   HeaderText="Time"
-                                   HeaderIcon="&#xf017;"
+            <controls:ExpanderView HeaderText="Length (Distance)"
+                                   HeaderIcon="&#xf547;"
                                    HeaderBackgroundColor="LightBlue">
 
                    <controls:ExpanderView.ExpanderContent>
-                    <VerticalStackLayout>
-                        <Label Text="This is the content of Expander 2"
-                               VerticalOptions="Start"
-                               HorizontalOptions="Center" />                     
-                    </VerticalStackLayout>
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="5" Padding="5">
+                            
+                            <controls:ConverterResultView IsResultVisible="{Binding IsLengthResultLabelVisible}"
+                                                          FromSymbol="{Binding Unit.LengthSelectedFromUnit}"
+                                                          UnitValue="{Binding Unit.LengthUnitValue, Mode=TwoWay}"
+                                                          ToSymbol="{Binding Unit.LengthSelectedToUnit}"
+                                                          ConversionResult="{Binding Unit.LengthConversionResult}" />
+                            <Label Text="{Binding LengthConversionSummary}"
+                                    FontSize="Small"
+                                    TextColor="Gray"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsLengthResultLabelVisible}" />
+
+                            <controls:ConverterEntryView UnitNames="{Binding LengthBaseNames}"
+                                                         SelectedFromUnit="{Binding Unit.LengthSelectedFromUnit,Mode=TwoWay}"
+                                                         SelectedToUnit="{Binding Unit.LengthSelectedToUnit, Mode=TwoWay}"
+                                                         UnitValue="{Binding Unit.LengthUnitValue,Mode=TwoWay}" />
+                        </VerticalStackLayout>
+                    </ScrollView>
                     
                     </controls:ExpanderView.ExpanderContent>                
             </controls:ExpanderView>

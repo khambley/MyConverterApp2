@@ -13,25 +13,45 @@ namespace MyConverterApp2.ViewModels
     public partial class MainViewModel : ViewModelBase
     {
         private readonly IRateService rateService;
+        private readonly ILengthService lengthService;
 
         [ObservableProperty]
         private Unit? unit;
 
         [ObservableProperty]
-        ObservableCollection<string>? baseNames;
-        
+        ObservableCollection<string>? unitTypes;
+
+        [ObservableProperty]
+        string? selectedUnitType;
+
+        [ObservableProperty]
+        ObservableCollection<string>? currencyBaseNames;
+
+        [ObservableProperty]
+        ObservableCollection<string>? lengthBaseNames;
+
+        [ObservableProperty]
+        string? lengthConversionSummary;
+
         [ObservableProperty]
         bool isResultLabelVisible;
 
+        [ObservableProperty]
+        bool isLengthResultLabelVisible;
 
-        public MainViewModel(IRateService rateService)
+
+        public MainViewModel(IRateService rateService, ILengthService lengthService)
         {
             this.rateService = rateService;
-            SetBaseNames();
+            this.lengthService = lengthService;
+            SetCurrencyBaseNames();
+            SetLengthBaseNames();
             IsResultLabelVisible = false;
+            IsLengthResultLabelVisible = false;
 
             Unit = new Unit();
             Unit.AutoConvertCallback = AutoConvertAsync;
+            Unit.LengthAutoConvertCallback = LengthAutoConvertAsync;
         }
 
         private async Task AutoConvertAsync()
@@ -43,9 +63,23 @@ namespace MyConverterApp2.ViewModels
                 await GetRatesAsync();
             }
         }
-        private void SetBaseNames()
+        private async Task LengthAutoConvertAsync()
         {
-            BaseNames = rateService.SetBaseNames();
+            if (!string.IsNullOrWhiteSpace(Unit?.LengthSelectedFromUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.LengthSelectedToUnit) &&
+                !string.IsNullOrWhiteSpace(Unit?.LengthUnitValue))
+            {
+                await ConvertLength();
+            }
+        }
+        private void SetCurrencyBaseNames()
+        {
+            CurrencyBaseNames = rateService.SetBaseNames();
+        }
+
+        private void SetLengthBaseNames()
+        {
+            LengthBaseNames = lengthService.SetBaseNames();
         }
         public string SplitBaseString(string s)
         {
@@ -61,21 +95,22 @@ namespace MyConverterApp2.ViewModels
             Unit.SelectedToUnit = "";
             IsResultLabelVisible = false;
         }
+
         [RelayCommand]
         public async Task GetRatesAsync()
-		{
+        {
             var newBaseFrom = SplitBaseString(Unit?.SelectedFromUnit ?? "");
 
             Unit.CurrencyRate = await rateService.GetRates(newBaseFrom ?? "");
 
-            if(Unit.CurrencyRate != null)
+            if (Unit.CurrencyRate != null)
             {
                 await ConvertRate();
             }
             else
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Currency Rate cannot be null", "OK");
-            }            
+            }
         }
 
         public async Task ConvertRate()
@@ -119,6 +154,31 @@ namespace MyConverterApp2.ViewModels
             }
             Unit.ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
             IsResultLabelVisible = true;
+        }
+
+        public async Task ConvertLength()
+        {
+            var result = await lengthService.Convert(
+                Unit?.LengthSelectedFromUnit,
+                Unit?.LengthSelectedToUnit,
+                Unit?.LengthUnitValue
+            );
+
+            if (result != null)
+            {
+                Unit.LengthConversionResult = result;
+                IsLengthResultLabelVisible = true;
+                LengthConversionSummary = lengthService.GetConversionSummary(
+                    Unit?.LengthSelectedFromUnit,
+                    Unit?.LengthSelectedToUnit
+                );
+            }
+            else
+            {
+                Unit.LengthConversionResult = "Conversion not supported.";
+                LengthConversionSummary = null;
+                IsLengthResultLabelVisible = false;
+            }
         }
     }
 }

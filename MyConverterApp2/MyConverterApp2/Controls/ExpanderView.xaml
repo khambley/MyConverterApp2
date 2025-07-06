@@ -8,10 +8,12 @@
 
     <maui:Expander Animated="True" HeaderTapped="OnHeaderTapped">
         <maui:Expander.HeaderContent>
+            
             <Grid BackgroundColor="{Binding HeaderBackgroundColor, Source={x:Reference this}}"
                   Padding="20,0,0,0"
                   MinimumHeightRequest="60">
                 <Grid ColumnDefinitions="40*,200*,*">
+                    
                     <Label Grid.Column="0"
                            Text="{Binding HeaderIcon, Source={x:Reference this}}" 
                            FontFamily="FontAwesomeSolid" 
