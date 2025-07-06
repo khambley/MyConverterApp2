@@ -9,5 +9,8 @@ namespace MyConverterApp2.Services
     public interface ILengthService
     {
         ObservableCollection<string> SetBaseNames();
+        Task<string>? Convert(string? fromUnit, string? toUnit, string? valueStr);
+        string? GetConversionSummary(string? fromUnit, string? toUnit);
+        
     }
 }

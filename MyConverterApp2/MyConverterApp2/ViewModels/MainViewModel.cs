@@ -31,6 +31,9 @@ namespace MyConverterApp2.ViewModels
         ObservableCollection<string>? lengthBaseNames;
 
         [ObservableProperty]
+        string? lengthConversionSummary;
+
+        [ObservableProperty]
         bool isResultLabelVisible;
 
         [ObservableProperty]
@@ -155,28 +158,26 @@ namespace MyConverterApp2.ViewModels
 
         public async Task ConvertLength()
         {
+            var result = await lengthService.Convert(
+                Unit?.LengthSelectedFromUnit,
+                Unit?.LengthSelectedToUnit,
+                Unit?.LengthUnitValue
+            );
 
-            decimal meter = 1609.344M;
-            decimal kilometer = 1.609344M;
-            decimal decimeter = 16093.44M;
-
-            if (Unit?.LengthSelectedFromUnit?.ToLower() == "mile")
+            if (result != null)
             {
-                if (Unit?.LengthSelectedToUnit?.ToLower() == "meter")
-                {
-                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * meter).ToString("F2");
-                    IsLengthResultLabelVisible = true;
-                }
-                if (Unit?.LengthSelectedToUnit?.ToLower() == "kilometer")
-                {
-                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * kilometer).ToString("F2");
-                    IsLengthResultLabelVisible = true;
-                }
-                if (Unit?.LengthSelectedToUnit?.ToLower() == "decimeter")
-                {
-                    Unit.LengthConversionResult = (decimal.Parse(Unit?.LengthUnitValue) * decimeter).ToString("F2");
-                    IsLengthResultLabelVisible = true;
-                }
+                Unit.LengthConversionResult = result;
+                IsLengthResultLabelVisible = true;
+                LengthConversionSummary = lengthService.GetConversionSummary(
+                    Unit?.LengthSelectedFromUnit,
+                    Unit?.LengthSelectedToUnit
+                );
+            }
+            else
+            {
+                Unit.LengthConversionResult = "Conversion not supported.";
+                LengthConversionSummary = null;
+                IsLengthResultLabelVisible = false;
             }
         }
     }

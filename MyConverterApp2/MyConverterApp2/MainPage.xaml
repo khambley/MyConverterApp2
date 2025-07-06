@@ -54,6 +54,11 @@
                                                           UnitValue="{Binding Unit.LengthUnitValue, Mode=TwoWay}"
                                                           ToSymbol="{Binding Unit.LengthSelectedToUnit}"
                                                           ConversionResult="{Binding Unit.LengthConversionResult}" />
+                            <Label Text="{Binding LengthConversionSummary}"
+                                    FontSize="Small"
+                                    TextColor="Gray"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsLengthResultLabelVisible}" />
 
                             <controls:ConverterEntryView UnitNames="{Binding LengthBaseNames}"
                                                          SelectedFromUnit="{Binding Unit.LengthSelectedFromUnit,Mode=TwoWay}"

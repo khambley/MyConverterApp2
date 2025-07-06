@@ -4,6 +4,7 @@
              x:Name="this"
              x:Class="MyConverterApp2.Controls.ConverterResultView">
     <VerticalStackLayout>
+        <!-- From Unit Symbol and Value -->
         <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
                 FontFamily="OpenSansBold"
                 HorizontalTextAlignment="Center"
@@ -12,6 +13,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding Source={x:Reference this}, Path=FromSymbol}" />
+                        <Span Text=" " />
                         <Span Text="{Binding Source={x:Reference this}, Path=UnitValue, StringFormat='{0:F2}'}" />
                     </FormattedString>
                 </Label.FormattedText>
@@ -25,6 +27,7 @@
                     HorizontalOptions="Center"
                     IsVisible="{Binding Source={x:Reference this}, Path=IsResultVisible}" />
 
+        <!-- To Unit Symbol and Value -->
             <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
                 HorizontalTextAlignment="Center"
                 Margin="0,0,0,5"
@@ -32,9 +35,26 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding Source={x:Reference this}, Path=ToSymbol}" />
+                        <Span Text=" " />
                         <Span Text="{Binding Source={x:Reference this}, Path=ConversionResult, StringFormat='{0:F2}'}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+        <!-- <Label FontSize="{OnPlatform Default=Default, iOS=Body, Android=Body }"
+                HorizontalTextAlignment="Start"
+                Margin="0,0,0,5"
+                IsVisible="{Binding Source={x:Reference this}, Path=IsResultVisible}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="1"/>
+                        <Span Text=" " />
+                        <Span Text="{Binding Source={x:Reference this}, Path=FromSymbol}" />
+                        <Span Text=" = " />
+                        <Span Text="{Binding Source={x:Reference this}, Path=ConversionResult, StringFormat='{0:F2}'}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding Source={x:Reference this}, Path=ToSymbol}" />
+                    </FormattedString>
+                </Label.FormattedText>
+                </Label> -->
     </VerticalStackLayout>
 </ContentView>

@@ -1,22 +1,23 @@
 using System.Collections;
+using System.Windows.Input;
 
 namespace MyConverterApp2.Controls;
 
 public partial class ConverterEntryView : ContentView
 {
-	public ConverterEntryView()
-	{
-		InitializeComponent();
-	}
-	public static readonly BindableProperty UnitNameProperty =
-    	BindableProperty.Create(nameof(UnitName), typeof(string), typeof(ConverterEntryView), string.Empty);
+    public ConverterEntryView()
+    {
+        InitializeComponent();
+    }
+    public static readonly BindableProperty UnitNameProperty =
+        BindableProperty.Create(nameof(UnitName), typeof(string), typeof(ConverterEntryView), string.Empty);
 
-	public string UnitName
-	{
-		get => (string)GetValue(UnitNameProperty);
-		set => SetValue(UnitNameProperty, value);
-	}
-	// Unit Names (ItemsSource)
+    public string UnitName
+    {
+        get => (string)GetValue(UnitNameProperty);
+        set => SetValue(UnitNameProperty, value);
+    }
+    // Unit Names (ItemsSource)
     public static readonly BindableProperty UnitNamesProperty =
         BindableProperty.Create(nameof(UnitNames), typeof(IEnumerable), typeof(ConverterEntryView));
 
@@ -55,4 +56,11 @@ public partial class ConverterEntryView : ContentView
         get => (double)GetValue(UnitValueProperty);
         set => SetValue(UnitValueProperty, value);
     }
+    // Command for swap
+    public ICommand SwapUnitsCommand => new Command(() =>
+    {
+        var temp = SelectedFromUnit;
+        SelectedFromUnit = SelectedToUnit;
+        SelectedToUnit = temp;
+    });
 }
