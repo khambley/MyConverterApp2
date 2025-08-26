@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:model="clr-namespace:MyConverterApp2.Models"
              x:Name="this"
-             x:Class="MyConverterApp2.Controls.ConverterEntryView">
+             x:Class="MyConverterApp2.Controls.ConverterEntryView"
+             >
     <ScrollView>
         <VerticalStackLayout Spacing="5" Padding="5">
-            <Grid ColumnSpacing="5" ColumnDefinitions="*,*,*" RowDefinitions="*,*,*">
+            <Grid ColumnSpacing="5" ColumnDefinitions="*" RowDefinitions="*,*,*,*">
                 <!-- First Row - Entry-->
                 <Entry  Grid.Column="0"
                         Grid.ColumnSpan="3"
@@ -17,16 +20,48 @@
                         ClearButtonVisibility="WhileEditing" />
 
                 <!-- Second Row - Unit Pickers-->
-                <Picker Grid.Column="0"
+                <!-- <Picker Grid.Column="0"
                         Grid.Row="1"
                         Title="From"
                         HorizontalOptions="Fill"
                         ItemsSource="{Binding Source={x:Reference this}, Path=UnitNames}"
                         SelectedItem="{Binding Source={x:Reference this}, Path=SelectedFromUnit, Mode=TwoWay}">
-                </Picker>
+                </Picker> -->
+                <editors:SfComboBox Grid.Column="0"
+                                    Grid.Row="1"
+                                    Placeholder="Select From Unit..."
+                                    TextMemberPath="CurrencyName"
+                                    DisplayMemberPath="CurrencyName"
+                                    IsEditable="True"
+                                    IsFilteringEnabled="True"
+                                    TextSearchMode="Contains"
+                                    ItemsSource="{Binding Source={x:Reference this}, Path=UnitNames}"
+                                    SelectedValuePath="CurrencyCode"
+                                    SelectedValue="{Binding Source={x:Reference this}, Path=SelectedFromUnit, Mode=TwoWay}">
+                        <editors:SfComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:Currency">
+                                        <ViewCell>
+                                                <HorizontalStackLayout HeightRequest="60"
+                                                                       Spacing="5"
+                                                                       VerticalOptions="Center"
+                                                                       HorizontalOptions="Start">
+
+                                                        <Image HorizontalOptions="Center"
+                                                                VerticalOptions="Center"
+                                                                Source="{Binding Icon}" />
+
+                                                        <Label HorizontalTextAlignment="Start"
+                                                                VerticalTextAlignment="Center"                                 
+                                                                Text="{Binding CurrencyName}" />
+
+                                                </HorizontalStackLayout>
+                                        </ViewCell>
+                                </DataTemplate>
+                        </editors:SfComboBox.ItemTemplate>        
+                </editors:SfComboBox>
 
                 <!-- Swap button in middle -->
-                <Button Grid.Row="1" Grid.Column="1"
+                <!-- <Button Grid.Row="1" Grid.Column="1"
                         Text="&#xf362;"
                         FontSize="20"
                         FontFamily="FontAwesomeSolid"
@@ -34,15 +69,56 @@
                         TextColor="White"
                         BackgroundColor="Navy"
                         Command="{Binding Source={x:Reference this}, Path=SwapUnitsCommand}">
-                </Button>
+                </Button> -->
 
-                <Picker Grid.Column="2"
+                <!-- <Picker Grid.Column="2"
                         Grid.Row="1"
                         Title="To"
                         HorizontalOptions="Fill"
                         ItemsSource="{Binding Source={x:Reference this}, Path=UnitNames}"
                         SelectedItem="{Binding Source={x:Reference this}, Path=SelectedToUnit, Mode=TwoWay}">
-                </Picker>
+                </Picker> -->
+                <editors:SfComboBox Grid.Column="0"
+                                    Grid.Row="2"
+                                    Placeholder="Select To Unit..."
+                                    TextMemberPath="CurrencyName"
+                                    DisplayMemberPath="CurrencyName"
+                                    IsEditable="True"
+                                    IsFilteringEnabled="True"
+                                    TextSearchMode="Contains"
+                                    ItemsSource="{Binding Source={x:Reference this}, Path=UnitNames}"
+                                    SelectedValuePath="CurrencyCode"
+                                    SelectedValue="{Binding Source={x:Reference this}, Path=SelectedToUnit, Mode=TwoWay}">
+                        <editors:SfComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:Currency">
+                                        <ViewCell>
+                                                <HorizontalStackLayout HeightRequest="60"
+                                                                       Spacing="5"
+                                                                       VerticalOptions="Center"
+                                                                       HorizontalOptions="Start">
+
+                                                        <Image HorizontalOptions="Center"
+                                                                VerticalOptions="Center"
+                                                                Source="{Binding Icon}"
+                                                                WidthRequest="50" />
+
+                                                        <Label HorizontalTextAlignment="Start"
+                                                                VerticalTextAlignment="Center"                                 
+                                                                Text="{Binding CurrencyName}" />
+                                                        
+                                                        <Label HorizontalTextAlignment="Start"
+                                                                VerticalTextAlignment="Center"                                 
+                                                                Text=" - " />
+
+                                                        <Label HorizontalTextAlignment="Start"
+                                                                VerticalTextAlignment="Center"                                 
+                                                                Text="{Binding CurrencyCode}" />
+
+                                                </HorizontalStackLayout>
+                                        </ViewCell>
+                                </DataTemplate>
+                        </editors:SfComboBox.ItemTemplate>        
+                </editors:SfComboBox>
             </Grid>
         </VerticalStackLayout>
     </ScrollView>
