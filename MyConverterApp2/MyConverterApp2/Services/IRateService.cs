@@ -9,7 +9,7 @@ namespace MyConverterApp2.Services
 {
     public interface IRateService
     {
-        public Task<CurrencyRate> GetRates(string selectedBase);
-        public ObservableCollection<string> SetBaseNames();
+        Task<CurrencyRate> GetRates(string selectedBase);
+        Task<ObservableCollection<Currency>> SetBaseNames();
     }
 }

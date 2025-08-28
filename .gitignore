@@ -400,3 +400,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+MyConverterApp2/MyConverterApp2/Settings.cs

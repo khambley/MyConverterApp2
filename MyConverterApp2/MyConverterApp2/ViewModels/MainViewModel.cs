@@ -25,7 +25,7 @@ namespace MyConverterApp2.ViewModels
         string? selectedUnitType;
 
         [ObservableProperty]
-        ObservableCollection<string>? currencyBaseNames;
+        ObservableCollection<Currency>? currencyBaseNames;
 
         [ObservableProperty]
         ObservableCollection<string>? lengthBaseNames;
@@ -72,9 +72,9 @@ namespace MyConverterApp2.ViewModels
                 await ConvertLength();
             }
         }
-        private void SetCurrencyBaseNames()
+        private async Task SetCurrencyBaseNames()
         {
-            CurrencyBaseNames = rateService.SetBaseNames();
+            CurrencyBaseNames = await rateService.SetBaseNames();
         }
 
         private void SetLengthBaseNames()
