@@ -10,42 +10,42 @@ namespace MyConverterApp2.Converters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if((string)value == "USD - US Dollar")
+            if((string)value == "USD")
             {
                 return "USD $";
             }
-            else if ((string)value == "GBP - Pound Sterling")
+            else if ((string)value == "GBP")
             {
                 // Opt + 3
                 return "GBP £";
             }
-            else if ((string)value == "EUR - Euro")
+            else if ((string)value == "EUR")
             {
                 // Opt + Shift + 2
                 return "EUR €";
             }
-            else if ((string)value == "BTC - Bitcoin")
+            else if ((string)value == "BTC")
             {
                 return "BTC ₿";
             }
-            else if ((string)value == "MXN - Mexican Peso")
+            else if ((string)value == "MXN")
             {
                 return "MXN ₱";
             }
-            else if ((string)value == "CAD - Canadian Dollar")
+            else if ((string)value == "CAD")
             {
                 return "CAD $";
             }
-            else if ((string)value == "JPY - Japanese Yen")
+            else if ((string)value == "JPY")
             {
                 // Opt + y
                 return "JPY ¥";
             }
-            else if ((string)value == "RUB - Russian Ruble")
+            else if ((string)value == "RUB")
             {
                 return "RUB ₽";
             }
-            else if ((string)value == "KRW - S Korean Won")
+            else if ((string)value == "KRW")
             {
                 return "KRW ₩";
             }
