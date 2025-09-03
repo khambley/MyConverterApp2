@@ -37,23 +37,32 @@
                                 <Entry  Grid.Column="0"
                                         Grid.ColumnSpan="3"
                                         Grid.Row="0"
-                                        Placeholder="Enter value to convert"
+                                        Placeholder="Enter value..."
                                         Keyboard="Numeric"
                                         Text="{Binding Unit.UnitValue, Mode=TwoWay}"
+                                        PlaceholderColor="{AppThemeBinding Light={StaticResource DarkBlue}, Dark={StaticResource White}}"
+                                        FontSize="Medium"
                                         HorizontalOptions="Fill"
-                                        ClearButtonVisibility="WhileEditing" />
-                                <!-- 2nd Row - Selected -->
+                                        ClearButtonVisibility="WhileEditing"
+                                        HeightRequest="40"
+                                        Margin="0,0,0,15" />
+                                
+                                <!-- 2nd Row - From Unit Selector -->
                                 <editors:SfComboBox Grid.Column="0"
                                                     Grid.Row="1"
-                                                    Placeholder="Select From Unit..."
+                                                    Placeholder="From Currency ..."
+                                                    HeightRequest="40"
                                                     TextMemberPath="CurrencyName"
                                                     DisplayMemberPath="CurrencyName"
                                                     IsEditable="True"
                                                     IsFilteringEnabled="True"
                                                     TextSearchMode="Contains"
+                                                    PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource White}}"
+                                                    FontSize="Medium"
                                                     ItemsSource="{Binding CurrencyBaseNames}"
                                                     SelectedValuePath="CurrencyCode"
-                                                    SelectedValue="{Binding Unit.SelectedFromUnit, Mode=TwoWay}">
+                                                    SelectedValue="{Binding Unit.SelectedFromUnit, Mode=TwoWay}"
+                                                    Margin="0,0,0,15">
                                         <editors:SfComboBox.ItemTemplate>
                                                 <DataTemplate x:DataType="model:Currency">
                                                         <ViewCell>
@@ -76,17 +85,21 @@
                                         </editors:SfComboBox.ItemTemplate>        
                                 </editors:SfComboBox>
 
+                                <!-- 3nd Row - To Unit Selector -->
                                 <editors:SfComboBox Grid.Column="0"
                                                     Grid.Row="2"
-                                                    Placeholder="Select To Unit..."
+                                                    Placeholder="To Currency..."
+                                                    HeightRequest="40"
                                                     TextMemberPath="CurrencyName"
                                                     DisplayMemberPath="CurrencyName"
                                                     IsEditable="True"
                                                     IsFilteringEnabled="True"
                                                     TextSearchMode="Contains"
+                                                    PlaceholderColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource White}}"
                                                     ItemsSource="{Binding CurrencyBaseNames}"
                                                     SelectedValuePath="CurrencyCode"
-                                                    SelectedValue="{Binding Unit.SelectedToUnit, Mode=TwoWay}">
+                                                    SelectedValue="{Binding Unit.SelectedToUnit, Mode=TwoWay}"
+                                                    FontSize="Medium">
                                         <editors:SfComboBox.ItemTemplate>
                                                 <DataTemplate x:DataType="model:Currency">
                                                         <ViewCell>
@@ -117,6 +130,7 @@
                                                 </DataTemplate>
                                         </editors:SfComboBox.ItemTemplate>        
                                 </editors:SfComboBox>
+
                             </Grid>
                         </VerticalStackLayout>
                 </ScrollView>
