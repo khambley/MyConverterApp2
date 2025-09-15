@@ -11,5 +11,6 @@ namespace MyConverterApp2.Services
     {
         Task<CurrencyRate> GetRates(string selectedBase);
         Task<ObservableCollection<Currency>> SetBaseNames();
+        string? GetConversionSummary(CurrencyRate? rate, string? fromUnit, string? toUnit);
     }
 }

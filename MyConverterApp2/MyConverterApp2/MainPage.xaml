@@ -30,6 +30,12 @@
                                                           UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}"
                                                           ToSymbol="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}"
                                                           ConversionResult="{Binding Unit.ConversionResult}" />
+                            <Label Text="{Binding CurrencyConversionSummary}"
+                                FontSize="Small"
+                                TextColor="Gray"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsCurrencySummaryVisible}" />
+
                             
                             <Grid ColumnSpacing="5" ColumnDefinitions="*" RowDefinitions="*,*,*,*">
 

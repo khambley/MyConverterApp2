@@ -15,29 +15,25 @@ namespace MyConverterApp2.ViewModels
         private readonly IRateService rateService;
         private readonly ILengthService lengthService;
 
-        [ObservableProperty]
-        private Unit? unit;
+        [ObservableProperty] private Unit? unit;
 
-        [ObservableProperty]
-        ObservableCollection<string>? unitTypes;
+        [ObservableProperty] ObservableCollection<string>? unitTypes;
 
-        [ObservableProperty]
-        string? selectedUnitType;
+        [ObservableProperty] string? selectedUnitType;
 
-        [ObservableProperty]
-        ObservableCollection<Currency>? currencyBaseNames;
+        [ObservableProperty] ObservableCollection<Currency>? currencyBaseNames;
 
-        [ObservableProperty]
-        ObservableCollection<string>? lengthBaseNames;
+        [ObservableProperty] ObservableCollection<string>? lengthBaseNames;
 
-        [ObservableProperty]
-        string? lengthConversionSummary;
+        [ObservableProperty] private string? currencyConversionSummary;
 
-        [ObservableProperty]
-        bool isResultLabelVisible;
+        [ObservableProperty] string? lengthConversionSummary;
 
-        [ObservableProperty]
-        bool isLengthResultLabelVisible;
+        [ObservableProperty] bool isResultLabelVisible;
+
+        [ObservableProperty] bool isLengthResultLabelVisible;
+
+        [ObservableProperty] private bool isCurrencySummaryVisible;
 
 
         public MainViewModel(IRateService rateService, ILengthService lengthService)
@@ -148,12 +144,23 @@ namespace MyConverterApp2.ViewModels
                 case "USD":
                     convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.USD != null ? Unit?.CurrencyRate.Rate.USD : "");
                     break;
+                case "HKD":
+                    convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.HKD != null ? Unit?.CurrencyRate.Rate.HKD : "");
+                    break;
                 default:
                     await Application.Current.MainPage.DisplayAlert("Error", "No matching currency found", "OK");
                     break;
             }
             Unit.ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
             IsResultLabelVisible = true;
+
+            CurrencyConversionSummary = rateService.GetConversionSummary(
+                Unit?.CurrencyRate,
+                Unit?.SelectedFromUnit,
+                Unit?.SelectedToUnit
+            );
+            
+            IsCurrencySummaryVisible = !string.IsNullOrWhiteSpace(CurrencyConversionSummary);
         }
 
         public async Task ConvertLength()

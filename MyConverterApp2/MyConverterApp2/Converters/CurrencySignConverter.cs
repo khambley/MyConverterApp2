@@ -49,6 +49,10 @@ namespace MyConverterApp2.Converters
             {
                 return "KRW ₩";
             }
+            else if ((string)value == "HKD")
+            {
+                return "HKD $";
+            }
             else
             {
                 return "";

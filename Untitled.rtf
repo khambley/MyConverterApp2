@@ -1,0 +1,112 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red107\green0\blue1;\red255\green255\blue255;\red220\green0\blue5;
+\red0\green0\blue0;\red0\green0\blue255;\red15\green112\blue1;}
+{\*\expandedcolortbl;;\cssrgb\c50196\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c89804\c0\c0;
+\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c100000;\cssrgb\c0\c50196\c0;}
+\margl1440\margr1440\vieww21480\viewh14940\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+<?xml\cf4  version\cf0 =\cf6 "1.0"\cf4  encoding\cf0 =\cf6 "utf-8"\cf0  \cf2 ?>\cf0 \cb1 \
+\cf2 \cb3 <ContentView\cf0  \cf4 xmlns\cf0 =\cf6 "http://schemas.microsoft.com/dotnet/2021/maui"\cf0 \cb1 \
+\cb3              \cf4 xmlns:x\cf0 =\cf6 "http://schemas.microsoft.com/winfx/2009/xaml"\cf0 \cb1 \
+\cb3              \cf4 xmlns:editors\cf0 =\cf6 "clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"\cf0 \cb1 \
+\cb3              \cf4 xmlns:model\cf0 =\cf6 "clr-namespace:MyConverterApp2.Models"\cf0 \cb1 \
+\cb3              \cf4 x:Name\cf0 =\cf6 "this"\cf0 \cb1 \
+\cb3              \cf4 x:Class\cf0 =\cf6 "MyConverterApp2.Controls.ConverterEntryView"\cf0 \cb1 \
+\cb3              \cf2 >\cf0 \cb1 \
+\cb3     \cf2 <ScrollView>\cf0 \cb1 \
+\cb3         \cf2 <VerticalStackLayout\cf0  \cf4 Spacing\cf0 =\cf6 "5"\cf0  \cf4 Padding\cf0 =\cf6 "5"\cf2 >\cf0 \cb1 \
+\cb3             \cf2 <Grid\cf0  \cf4 ColumnSpacing\cf0 =\cf6 "5"\cf0  \cf4 ColumnDefinitions\cf0 =\cf6 "*"\cf0  \cf4 RowDefinitions\cf0 =\cf6 "*,*,*,*"\cf2 >\
+\cf0 \cb1 \
+\cb3                 \cf7 <!-- First Row - Entry-->\cf0 \cb1 \
+\cb3                 \cf2 <Entry\cf0   \cf4 Grid.Column\cf0 =\cf6 "0"\cf0 \cb1 \
+\cb3                         \cf4 Grid.ColumnSpan\cf0 =\cf6 "3"\cf0 \cb1 \
+\cb3                         \cf4 Grid.Row\cf0 =\cf6 "0"\cf0 \cb1 \
+\cb3                         \cf4 Placeholder\cf0 =\cf6 "Enter value to convert"\cf0 \cb1 \
+\cb3                         \cf4 Keyboard\cf0 =\cf6 "Numeric"\cf0 \cb1 \
+\cb3                         \cf4 Text\cf0 =\cf6 "\{Binding Source=\{x:Reference this\}, Path=UnitValue, Mode=TwoWay\}"\cf0 \cb1 \
+\cb3                         \cf4 HorizontalOptions\cf0 =\cf6 "Fill"\cf0 \cb1 \
+\cb3                         \cf4 ClearButtonVisibility\cf0 =\cf6 "WhileEditing"\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                 \cf2 <editors:SfComboBox\cf0  \cf4 Grid.Column\cf0 =\cf6 "0"\cf0 \cb1 \
+\cb3                                     \cf4 Grid.Row\cf0 =\cf6 "1"\cf0 \cb1 \
+\cb3                                     \cf4 Placeholder\cf0 =\cf6 "Select From Unit..."\cf0 \cb1 \
+\cb3                                     \cf4 TextMemberPath\cf0 =\cf6 "CurrencyName"\cf0 \cb1 \
+\cb3                                     \cf4 DisplayMemberPath\cf0 =\cf6 "CurrencyName"\cf0 \cb1 \
+\cb3                                     \cf4 IsEditable\cf0 =\cf6 "True"\cf0 \cb1 \
+\cb3                                     \cf4 IsFilteringEnabled\cf0 =\cf6 "True"\cf0 \cb1 \
+\cb3                                     \cf4 TextSearchMode\cf0 =\cf6 "Contains"\cf0 \cb1 \
+\cb3                                     \cf4 ItemsSource\cf0 =\cf6 "\{Binding Source=\{x:Reference this\}, Path=UnitNames\}"\cf0 \cb1 \
+\cb3                                     \cf4 SelectedValuePath\cf0 =\cf6 "CurrencyCode"\cf0 \cb1 \
+\cb3                                     \cf4 SelectedValue\cf0 =\cf6 "\{Binding Source=\{x:Reference this\}, Path=SelectedFromUnit, Mode=TwoWay\}"\cf2 >\cf0 \cb1 \
+\cb3                         \cf2 <editors:SfComboBox.ItemTemplate>\cf0 \cb1 \
+\cb3                                 \cf2 <DataTemplate\cf0  \cf4 x:DataType\cf0 =\cf6 "model:Currency"\cf2 >\cf0 \cb1 \
+\cb3                                         \cf2 <ViewCell>\cf0 \cb1 \
+\cb3                                                 \cf2 <HorizontalStackLayout\cf0  \cf4 HeightRequest\cf0 =\cf6 "60"\cf0 \cb1 \
+\cb3                                                                        \cf4 Spacing\cf0 =\cf6 "5"\cf0 \cb1 \
+\cb3                                                                        \cf4 VerticalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                        \cf4 HorizontalOptions\cf0 =\cf6 "Start"\cf2 >\cf0 \cb1 \
+\
+\cb3                                                         \cf2 <Image\cf0  \cf4 HorizontalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                 \cf4 Source\cf0 =\cf6 "\{Binding Icon\}"\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                                                         \cf2 <Label\cf0  \cf4 HorizontalTextAlignment\cf0 =\cf6 "Start"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalTextAlignment\cf0 =\cf6 "Center"\cf0                                  \cb1 \
+\cb3                                                                 \cf4 Text\cf0 =\cf6 "\{Binding CurrencyName\}"\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                                                 \cf2 </HorizontalStackLayout>\cf0 \cb1 \
+\cb3                                         \cf2 </ViewCell>\cf0 \cb1 \
+\cb3                                 \cf2 </DataTemplate>\cf0 \cb1 \
+\cb3                         \cf2 </editors:SfComboBox.ItemTemplate>\cf0         \cb1 \
+\cb3                 \cf2 </editors:SfComboBox>\cf0 \cb1 \
+\
+\cb3                 \cf2 <editors:SfComboBox\cf0  \cf4 Grid.Column\cf0 =\cf6 "0"\cf0 \cb1 \
+\cb3                                     \cf4 Grid.Row\cf0 =\cf6 "2"\cf0 \cb1 \
+\cb3                                     \cf4 Placeholder\cf0 =\cf6 "Select To Unit..."\cf0 \cb1 \
+\cb3                                     \cf4 TextMemberPath\cf0 =\cf6 "CurrencyName"\cf0 \cb1 \
+\cb3                                     \cf4 DisplayMemberPath\cf0 =\cf6 "CurrencyName"\cf0 \cb1 \
+\cb3                                     \cf4 IsEditable\cf0 =\cf6 "True"\cf0 \cb1 \
+\cb3                                     \cf4 IsFilteringEnabled\cf0 =\cf6 "True"\cf0 \cb1 \
+\cb3                                     \cf4 TextSearchMode\cf0 =\cf6 "Contains"\cf0 \cb1 \
+\cb3                                     \cf4 ItemsSource\cf0 =\cf6 "\{Binding Source=\{x:Reference this\}, Path=UnitNames\}"\cf0 \cb1 \
+\cb3                                     \cf4 SelectedValuePath\cf0 =\cf6 "CurrencyCode"\cf0 \cb1 \
+\cb3                                     \cf4 SelectedValue\cf0 =\cf6 "\{Binding Source=\{x:Reference this\}, Path=SelectedToUnit, Mode=TwoWay\}"\cf2 >\cf0 \cb1 \
+\cb3                         \cf2 <editors:SfComboBox.ItemTemplate>\cf0 \cb1 \
+\cb3                                 \cf2 <DataTemplate\cf0  \cf4 x:DataType\cf0 =\cf6 "model:Currency"\cf2 >\cf0 \cb1 \
+\cb3                                         \cf2 <ViewCell>\cf0 \cb1 \
+\cb3                                                 \cf2 <HorizontalStackLayout\cf0  \cf4 HeightRequest\cf0 =\cf6 "60"\cf0 \cb1 \
+\cb3                                                                        \cf4 Spacing\cf0 =\cf6 "5"\cf0 \cb1 \
+\cb3                                                                        \cf4 VerticalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                        \cf4 HorizontalOptions\cf0 =\cf6 "Start"\cf2 >\cf0 \cb1 \
+\
+\cb3                                                         \cf2 <Image\cf0  \cf4 HorizontalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalOptions\cf0 =\cf6 "Center"\cf0 \cb1 \
+\cb3                                                                 \cf4 Source\cf0 =\cf6 "\{Binding Icon\}"\cf0 \cb1 \
+\cb3                                                                 \cf4 WidthRequest\cf0 =\cf6 "50"\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                                                         \cf2 <Label\cf0  \cf4 HorizontalTextAlignment\cf0 =\cf6 "Start"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalTextAlignment\cf0 =\cf6 "Center"\cf0                                  \cb1 \
+\cb3                                                                 \cf4 Text\cf0 =\cf6 "\{Binding CurrencyName\}"\cf0  \cf2 />\cf0 \cb1 \
+\cb3                                                         \cb1 \
+\cb3                                                         \cf2 <Label\cf0  \cf4 HorizontalTextAlignment\cf0 =\cf6 "Start"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalTextAlignment\cf0 =\cf6 "Center"\cf0                                  \cb1 \
+\cb3                                                                 \cf4 Text\cf0 =\cf6 " - "\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                                                         \cf2 <Label\cf0  \cf4 HorizontalTextAlignment\cf0 =\cf6 "Start"\cf0 \cb1 \
+\cb3                                                                 \cf4 VerticalTextAlignment\cf0 =\cf6 "Center"\cf0                                  \cb1 \
+\cb3                                                                 \cf4 Text\cf0 =\cf6 "\{Binding CurrencyCode\}"\cf0  \cf2 />\cf0 \cb1 \
+\
+\cb3                                                 \cf2 </HorizontalStackLayout>\cf0 \cb1 \
+\cb3                                         \cf2 </ViewCell>\cf0 \cb1 \
+\cb3                                 \cf2 </DataTemplate>\cf0 \cb1 \
+\cb3                         \cf2 </editors:SfComboBox.ItemTemplate>\cf0         \cb1 \
+\cb3                 \cf2 </editors:SfComboBox>\cf0 \cb1 \
+\cb3             \cf2 </Grid>\cf0 \cb1 \
+\cb3         \cf2 </VerticalStackLayout>\cf0 \cb1 \
+\cb3     \cf2 </ScrollView>\cf0 \cb1 \
+\cf2 \cb3 </ContentView>\cf0 \cb1 \
+}
