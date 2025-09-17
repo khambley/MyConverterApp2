@@ -36,9 +36,6 @@ namespace MyConverterApp2.Models
         string? convertionRate;
 
         [ObservableProperty]
-        string? conversionResult;
-
-        [ObservableProperty]
         string? lengthConversionResult;
 
         // ViewModel currency callback
