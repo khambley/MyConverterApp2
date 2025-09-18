@@ -49,11 +49,11 @@ public partial class ConverterEntryView : ContentView
 
     // Unit Value Input
     public static readonly BindableProperty UnitValueProperty =
-        BindableProperty.Create(nameof(UnitValue), typeof(double), typeof(ConverterEntryView), default(double), BindingMode.TwoWay);
+        BindableProperty.Create(nameof(UnitValue), typeof(string), typeof(ConverterEntryView), default(string), BindingMode.TwoWay);
 
-    public double UnitValue
+    public string UnitValue
     {
-        get => (double)GetValue(UnitValueProperty);
+        get => (string)GetValue(UnitValueProperty);
         set => SetValue(UnitValueProperty, value);
     }
     // Command for swap
