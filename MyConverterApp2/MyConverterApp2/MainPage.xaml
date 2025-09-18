@@ -29,7 +29,13 @@
                                                           FromSymbol="{Binding Unit.SelectedFromUnit, Converter={StaticResource currencySignConverter}}"
                                                           UnitValue="{Binding Unit.UnitValue, Mode=TwoWay}"
                                                           ToSymbol="{Binding Unit.SelectedToUnit, Converter={StaticResource currencySignConverter}}"
-                                                          ConversionResult="{Binding Unit.ConversionResult}" />
+                                                          ConversionResult="{Binding ConversionResult}" />
+                            <Label Text="{Binding CurrencyConversionSummary}"
+                                FontSize="Small"
+                                TextColor="Gray"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsCurrencySummaryVisible}" />
+
                             
                             <Grid ColumnSpacing="5" ColumnDefinitions="*" RowDefinitions="*,*,*,*">
 

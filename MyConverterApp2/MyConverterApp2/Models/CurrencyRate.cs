@@ -28,6 +28,7 @@ namespace MyConverterApp2.Models
         public string? RUB { get; set; }
         public string? KRW { get; set; }
         public string? USD { get; set; }
+        public string? HKD { get; set; }
 
         //MXN,GBP,EUR,BTC,CAD,JPY,RUB,KRD,USD
     }

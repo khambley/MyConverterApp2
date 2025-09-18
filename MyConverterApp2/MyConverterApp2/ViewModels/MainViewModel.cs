@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,29 +16,27 @@ namespace MyConverterApp2.ViewModels
         private readonly IRateService rateService;
         private readonly ILengthService lengthService;
 
-        [ObservableProperty]
-        private Unit? unit;
+        [ObservableProperty] private Unit? unit;
 
-        [ObservableProperty]
-        ObservableCollection<string>? unitTypes;
+        [ObservableProperty] string? conversionResult;
 
-        [ObservableProperty]
-        string? selectedUnitType;
+        [ObservableProperty] ObservableCollection<string>? unitTypes;
 
-        [ObservableProperty]
-        ObservableCollection<Currency>? currencyBaseNames;
+        [ObservableProperty] string? selectedUnitType;
 
-        [ObservableProperty]
-        ObservableCollection<string>? lengthBaseNames;
+        [ObservableProperty] ObservableCollection<Currency>? currencyBaseNames;
 
-        [ObservableProperty]
-        string? lengthConversionSummary;
+        [ObservableProperty] ObservableCollection<string>? lengthBaseNames;
 
-        [ObservableProperty]
-        bool isResultLabelVisible;
+        [ObservableProperty] private string? currencyConversionSummary;
 
-        [ObservableProperty]
-        bool isLengthResultLabelVisible;
+        [ObservableProperty] string? lengthConversionSummary;
+
+        [ObservableProperty] bool isResultLabelVisible;
+
+        [ObservableProperty] bool isLengthResultLabelVisible;
+
+        [ObservableProperty] private bool isCurrencySummaryVisible;
 
 
         public MainViewModel(IRateService rateService, ILengthService lengthService)
@@ -50,8 +49,36 @@ namespace MyConverterApp2.ViewModels
             IsLengthResultLabelVisible = false;
 
             Unit = new Unit();
+            if (Unit != null)
+            {
+                Unit.PropertyChanged += OnUnitPropertyChanged;
+            }
             Unit.AutoConvertCallback = AutoConvertAsync;
             Unit.LengthAutoConvertCallback = LengthAutoConvertAsync;
+        }
+
+        partial void OnUnitChanged(Unit? oldValue, Unit? newValue)
+        {
+            if (oldValue != null) oldValue.PropertyChanged -= OnUnitPropertyChanged;
+            if (newValue != null) newValue.PropertyChanged += OnUnitPropertyChanged;
+        }
+
+        /// <summary>
+        /// Resets UnitValue and Currency Pickers
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnUnitPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Unit.UnitValue))
+            {
+                // Auto-reset the result when user starts a new input
+                ConversionResult = string.Empty;
+                IsResultLabelVisible = false;
+                IsCurrencySummaryVisible = false;
+                Unit.SelectedFromUnit = null;
+                Unit.SelectedToUnit = null;
+            }
         }
 
         private async Task AutoConvertAsync()
@@ -72,6 +99,7 @@ namespace MyConverterApp2.ViewModels
                 await ConvertLength();
             }
         }
+
         private async Task SetCurrencyBaseNames()
         {
             CurrencyBaseNames = await rateService.SetBaseNames();
@@ -89,7 +117,7 @@ namespace MyConverterApp2.ViewModels
         [RelayCommand]
         public async Task ClearResultAsync()
         {
-            Unit.ConversionResult = "";
+            ConversionResult = "";
             Unit.UnitValue = "";
             Unit.SelectedFromUnit = "";
             Unit.SelectedToUnit = "";
@@ -148,12 +176,23 @@ namespace MyConverterApp2.ViewModels
                 case "USD":
                     convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.USD != null ? Unit?.CurrencyRate.Rate.USD : "");
                     break;
+                case "HKD":
+                    convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.HKD != null ? Unit?.CurrencyRate.Rate.HKD : "");
+                    break;
                 default:
                     await Application.Current.MainPage.DisplayAlert("Error", "No matching currency found", "OK");
                     break;
             }
-            Unit.ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
+            ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
             IsResultLabelVisible = true;
+
+            CurrencyConversionSummary = rateService.GetConversionSummary(
+                Unit?.CurrencyRate,
+                Unit?.SelectedFromUnit,
+                Unit?.SelectedToUnit
+            );
+            
+            IsCurrencySummaryVisible = !string.IsNullOrWhiteSpace(CurrencyConversionSummary);
         }
 
         public async Task ConvertLength()

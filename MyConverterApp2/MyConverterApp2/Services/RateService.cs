@@ -15,7 +15,8 @@ namespace MyConverterApp2.Services
 
         const string UriBase = "https://api.currencyfreaks.com/v2.0";
 
-        string symbols = "MXN,GBP,EUR,BTC,CAD,JPY,RUB,KRW,USD";
+        string symbols = "BTC,CAD,EUR,GBP,HKD,JPY,KRW,MXN,RUB,USD,";
+
 
         readonly HttpClient httpClient = new()
         {
@@ -25,6 +26,50 @@ namespace MyConverterApp2.Services
 
         public RateService()
         {
+        }
+
+        public string? GetConversionSummary(CurrencyRate? rate, string? fromUnit, string? toUnit)
+        {
+            if (rate?.Rate is null || string.IsNullOrWhiteSpace(fromUnit) || string.IsNullOrWhiteSpace(toUnit))
+                return null;
+
+            var from = SplitBaseCode(fromUnit);
+            var to   = SplitBaseCode(toUnit);
+
+            if (TryGetRate(rate, to, out var factor))
+            {
+                // If your model has a date/timestamp, use it; otherwise fall back to now
+                var asOf = DateTime.UtcNow;
+                return $"1 {from} = {factor:F4} {to} (as of {asOf:MMM dd, yyyy})";
+            }
+
+            return null;
+        }     
+
+        private static string SplitBaseCode(string s) => s?.Split(' ')[0] ?? string.Empty;
+
+        /// <summary>Pulls a decimal rate out of the strongly-typed properties.</summary>
+        private static bool TryGetRate(CurrencyRate rate, string code, out decimal value)
+        {
+            value = 0m;
+
+            // Map the few you support. (Matches your 'symbols' list.)
+            string? raw = code.ToUpper() switch
+            {
+                "MXN" => rate.Rate.MXN,
+                "GBP" => rate.Rate.GBP,
+                "EUR" => rate.Rate.EUR,
+                "BTC" => rate.Rate.BTC,
+                "CAD" => rate.Rate.CAD,
+                "JPY" => rate.Rate.JPY,
+                "RUB" => rate.Rate.RUB,
+                "KRW" => rate.Rate.KRW,
+                "USD" => rate.Rate.USD,
+                "HKD" => rate.Rate.HKD,
+                _ => null
+            };
+
+            return decimal.TryParse(raw, out value);
         }
 
         public async Task<CurrencyRate> GetRates(string selectedBase)
