@@ -11,6 +11,11 @@
              x:Class="MyConverterApp2.MainPage">
     <ContentPage.Resources>
         <converters:CurrencySignConverter x:Key="currencySignConverter" />
+        <converters:BoolToPinIconConverter x:Key="BoolToPinIconConverter" />
+        <converters:BoolToPinTextConverter x:Key="BoolToPinTextConverter" />
+        <converters:DateTimeToTimeSpanConverter x:Key="DateTimeToTimeSpanConverter" />
+        <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+        <converters:TimeZoneItemToIdConverter x:Key="TimeZoneItemToIdConverter" />
     </ContentPage.Resources>
 
         <VerticalStackLayout x:Name="AccordionLayout" 
@@ -143,6 +148,7 @@
                 </controls:ExpanderView.ExpanderContent>    
                                 
             </controls:ExpanderView>
+
             <!-- Expander 2 -->
             <controls:ExpanderView HeaderText="Length (Distance)"
                                    HeaderIcon="&#xf547;"
@@ -171,6 +177,63 @@
                     </ScrollView>
                     
                     </controls:ExpanderView.ExpanderContent>                
+            </controls:ExpanderView>
+            
+            <!-- Expander 3 -->
+            <controls:ExpanderView x:Name="Time"
+                                   HeaderText="Time"
+                                   HeaderIcon="&#xf017;"
+                                   HeaderBackgroundColor="Gold">
+                        <controls:ExpanderView.ExpanderContent>
+                                <VerticalStackLayout Spacing="12" Padding="12">
+
+                                        <!-- Local time (device) -->
+                                        <Grid ColumnDefinitions="Auto,*">
+                                                <Label Text="Your Local Time" VerticalOptions="Center"/>
+                                                <Grid Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                        <TimePicker Time="{Binding LocalTime, Mode=TwoWay, Converter={StaticResource DateTimeToTimeSpanConverter}}" />
+                                                        <Button Grid.Column="1" Text="Now" Command="{Binding SetLocalNowCommand}" />
+                                                </Grid>
+                                        </Grid>
+
+                                        <!-- Target Time Zone -->
+                                        <Grid ColumnDefinitions="Auto,*" RowSpacing="6">
+                                        <Label Text="Convert To" VerticalOptions="Center" />
+                                        <Picker Grid.Column="1"
+                                                ItemDisplayBinding="{Binding DisplayName}"
+                                                ItemsSource="{Binding TimeZones}"
+                                                SelectedItem="{Binding SelectedTimeZone, Mode=TwoWay}" />
+                                        </Grid>
+
+                                        <!-- Result -->
+                                        <Border StrokeThickness="1" Padding="12" StrokeShape="RoundRectangle 10">
+                                                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10">
+                                                        <Label Text="Result" FontAttributes="Bold" />
+                                                        <Label Grid.Column="1" 
+                                                        Text="{Binding TargetTime, StringFormat='{0:ddd, MMM d, yyyy h:mm tt}'}"
+                                                        FontSize="16" />
+                                                        <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                                        Text="{Binding SelectedTargetTzId}"
+                                                        FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                </Grid>
+                                        </Border>
+
+                                        <!-- Pin / Use Pinned -->
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                                <Button Text="Use Pinned" 
+                                                        Command="{Binding UsePinnedCommand}"
+                                                        IsEnabled="{Binding HasPinned}"/>
+                                                <Button Grid.Column="1"
+                                                        Text="{Binding IsPinned, Converter={StaticResource BoolToPinTextConverter}}"
+                                                        Command="{Binding TogglePinCommand}"/>
+                                                <ImageButton Grid.Column="2"
+                                                                WidthRequest="36" HeightRequest="36"
+                                                                Command="{Binding TogglePinCommand}"
+                                                                Source="{Binding IsPinned, Converter={StaticResource BoolToPinIconConverter}}"
+                                                                BackgroundColor="Transparent" />
+                                        </Grid>   
+                                </VerticalStackLayout>
+                        </controls:ExpanderView.ExpanderContent>
             </controls:ExpanderView>
         </VerticalStackLayout>
 

@@ -16,6 +16,27 @@ namespace MyConverterApp2.ViewModels
         private readonly IRateService rateService;
         private readonly ILengthService lengthService;
 
+        private const string PrefPinnedTzId = "PinnedTimeZoneId";
+        private readonly IDispatcherTimer _timer;
+
+        public ObservableCollection<TimeZoneItem> TimeZones { get; } = new();
+
+        [ObservableProperty] private string? selectedTargetTzId;
+        [ObservableProperty] private TimeZoneItem? selectedTimeZone;
+        [ObservableProperty] private DateTime localTime;
+        [ObservableProperty] private DateTime targetTime;
+        [ObservableProperty] private string? pinnedTzId;
+        [ObservableProperty] private bool isPinned;
+        [ObservableProperty] private string? targetTzOffsetText;   // e.g., "UTC+1 (BST)"
+
+        public bool HasPinned => !string.IsNullOrWhiteSpace(PinnedTzId);
+
+        partial void OnPinnedTzIdChanged(string? oldValue, string? newValue)
+        {
+            OnPropertyChanged(nameof(HasPinned));
+        }
+
+
         [ObservableProperty] private Unit? unit;
 
         [ObservableProperty] string? conversionResult;
@@ -55,7 +76,142 @@ namespace MyConverterApp2.ViewModels
             }
             Unit.AutoConvertCallback = AutoConvertAsync;
             Unit.LengthAutoConvertCallback = LengthAutoConvertAsync;
+
+            // 1) Build time zone list (sorted: UTC offset, then name)
+            var zones = TimeZoneInfo.GetSystemTimeZones()
+                .OrderBy(z => z.BaseUtcOffset)
+                .ThenBy(z => z.DisplayName)
+                .Select(z => new TimeZoneItem(z.Id, z.DisplayName));
+
+            foreach (var z in zones)
+                TimeZones.Add(z);
+
+            // 2) Initialize local time
+            LocalTime = DateTime.Now;
+
+            // 3) Load pinned TZ (if any). Fall back to Europe/London, else first item.
+            var pinned = Preferences.Get(PrefPinnedTzId, null);
+            string fallbackId = TimeZones.FirstOrDefault(t => t.Id == "America/Chicago")?.Id
+                                ?? TimeZones.FirstOrDefault()?.Id
+                                ?? "UTC"; // ultra-safe fallback (shouldn't hit if list is non-empty)
+
+            var initialId = !string.IsNullOrWhiteSpace(pinned) && TimeZones.Any(t => t.Id == pinned)
+                ? pinned
+                : fallbackId;
+
+            // Keep both properties in sync up front
+            SelectedTargetTzId = initialId;
+            SelectedTimeZone   = TimeZones.FirstOrDefault(t => t.Id == initialId);
+
+            // If we restored a pinned zone, mark as pinned
+            IsPinned = !string.IsNullOrWhiteSpace(pinned) && pinned == initialId;
+            PinnedTzId = IsPinned ? pinned : null;
+
+            // 4) Compute initial conversion
+            RecalculateTarget();
+
+            // 5) Keep "now" fresh every 30s (or change to 60s if you prefer)
+            _timer = Application.Current!.Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(30);
+            _timer.Tick += (_, __) =>
+            {
+                LocalTime = DateTime.Now;
+                RecalculateTarget();
+            };
+            _timer.Start();
         }
+
+        partial void OnSelectedTargetTzIdChanged(string? oldValue, string? newValue)
+        {
+            // keep SelectedTimeZone in sync when SelectedTargetTzId changes (e.g., after load/pin)
+            SelectedTimeZone = TimeZones.FirstOrDefault(z => z.Id == newValue);
+            RecalculateTarget();
+            if (IsPinned) SavePinned();
+        }
+
+        partial void OnSelectedTimeZoneChanged(TimeZoneItem? oldValue, TimeZoneItem? newValue)
+        {
+            // keep SelectedTargetTzId in sync when user picks from the UI
+            SelectedTargetTzId = newValue?.Id;
+            RecalculateTarget();
+            if (IsPinned) SavePinned();
+        }
+
+
+        partial void OnLocalTimeChanged(DateTime oldValue, DateTime newValue) => RecalculateTarget();
+
+        [RelayCommand]
+        private void TogglePin()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedTargetTzId)) return;
+
+            IsPinned = !IsPinned;
+            if (IsPinned)
+            {
+                PinnedTzId = SelectedTargetTzId;
+                SavePinned();
+            }
+            else
+            {
+                Preferences.Remove(PrefPinnedTzId);
+                PinnedTzId = null;
+            }
+        }
+
+        [RelayCommand]
+        private void UsePinned()
+        {
+            if (!string.IsNullOrWhiteSpace(PinnedTzId) && TimeZones.Any(t => t.Id == PinnedTzId))
+                SelectedTargetTzId = PinnedTzId;
+        }
+
+        [RelayCommand]
+        private void SetLocalNow()
+        {
+            LocalTime = DateTime.Now;
+        }
+
+        private void SavePinned() => Preferences.Set(PrefPinnedTzId, PinnedTzId);
+
+        private void RecalculateTarget()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(SelectedTargetTzId))
+                    return;
+
+                var localTz = TimeZoneInfo.Local;
+                var targetTz = TimeZoneInfo.FindSystemTimeZoneById(SelectedTargetTzId);
+
+                // Treat LocalTime as local-zone time (not unspecified/UTC)
+                var localDt = DateTime.SpecifyKind(LocalTime, DateTimeKind.Unspecified);
+                var localWithKind = TimeZoneInfo.ConvertTime(localDt, localTz); // attach local zone context
+
+                var utc = TimeZoneInfo.ConvertTimeToUtc(localWithKind, localTz);
+                var target = TimeZoneInfo.ConvertTimeFromUtc(utc, targetTz);
+
+                TargetTime = target;
+                TargetTzOffsetText = FormatOffset(targetTz, target);
+            }
+            catch
+            {
+                // if a user picks an exotic/removed zone, fallback gracefully
+                TargetTime = DateTime.MinValue;
+                TargetTzOffsetText = "Unavailable";
+            }
+        }
+
+
+        private static string FormatOffset(TimeZoneInfo tz, DateTime when)
+        {
+            var offset = tz.GetUtcOffset(when);
+            var sign = offset < TimeSpan.Zero ? "-" : "+";
+            offset = offset.Duration();
+            var abbrev = tz.IsDaylightSavingTime(when) ? "DST" : "STD";
+            return $"UTC{sign}{offset.Hours:00}:{offset.Minutes:00} ({abbrev})";
+        }
+
+        public void Dispose() => _timer?.Stop();
 
         partial void OnUnitChanged(Unit? oldValue, Unit? newValue)
         {
@@ -64,7 +220,7 @@ namespace MyConverterApp2.ViewModels
         }
 
         /// <summary>
-        /// Resets UnitValue and Currency Pickers
+        /// Resets Currency UnitValue and Currency Pickers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -81,6 +237,7 @@ namespace MyConverterApp2.ViewModels
             }
         }
 
+        // Currency: Automatically converts and displays currency result
         private async Task AutoConvertAsync()
         {
             if (!string.IsNullOrWhiteSpace(Unit?.SelectedFromUnit) &&
@@ -90,6 +247,8 @@ namespace MyConverterApp2.ViewModels
                 await GetRatesAsync();
             }
         }
+
+        // Length: Automatically converts and displays length result
         private async Task LengthAutoConvertAsync()
         {
             if (!string.IsNullOrWhiteSpace(Unit?.LengthSelectedFromUnit) &&
@@ -100,20 +259,25 @@ namespace MyConverterApp2.ViewModels
             }
         }
 
+        // Currency: Base Names
         private async Task SetCurrencyBaseNames()
         {
             CurrencyBaseNames = await rateService.SetBaseNames();
         }
 
+        // Length: Base Names
         private void SetLengthBaseNames()
         {
             LengthBaseNames = lengthService.SetBaseNames();
         }
+
+        // Utility Methods
         public string SplitBaseString(string s)
         {
             return s.Split(' ')[0];
         }
 
+        // Currency: Clear Results
         [RelayCommand]
         public async Task ClearResultAsync()
         {
@@ -124,6 +288,7 @@ namespace MyConverterApp2.ViewModels
             IsResultLabelVisible = false;
         }
 
+        // Currency: Get Rates
         [RelayCommand]
         public async Task GetRatesAsync()
         {
@@ -141,6 +306,7 @@ namespace MyConverterApp2.ViewModels
             }
         }
 
+        // Currency: Convert Rate
         public async Task ConvertRate()
         {
             var newBaseTo = SplitBaseString(Unit?.SelectedToUnit ?? "");
@@ -173,16 +339,17 @@ namespace MyConverterApp2.ViewModels
                 case "KRW":
                     convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.KRW != null ? Unit?.CurrencyRate.Rate.KRW : "");
                     break;
-                case "USD":
+                case "USD": // US Dollar
                     convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.USD != null ? Unit?.CurrencyRate.Rate.USD : "");
                     break;
-                case "HKD":
+                case "HKD": // Hong Kong Dollar
                     convertRate = decimal.Parse(Unit?.CurrencyRate?.Rate?.HKD != null ? Unit?.CurrencyRate.Rate.HKD : "");
                     break;
                 default:
                     await Application.Current.MainPage.DisplayAlert("Error", "No matching currency found", "OK");
                     break;
             }
+
             ConversionResult = (decimal.Parse(Unit?.UnitValue) * convertRate).ToString("F2");
             IsResultLabelVisible = true;
 
@@ -191,10 +358,11 @@ namespace MyConverterApp2.ViewModels
                 Unit?.SelectedFromUnit,
                 Unit?.SelectedToUnit
             );
-            
+
             IsCurrencySummaryVisible = !string.IsNullOrWhiteSpace(CurrencyConversionSummary);
         }
 
+        // Length: Convert Length
         public async Task ConvertLength()
         {
             var result = await lengthService.Convert(
@@ -220,4 +388,6 @@ namespace MyConverterApp2.ViewModels
             }
         }
     }
+    public record TimeZoneItem(string Id, string DisplayName);
 }
+
