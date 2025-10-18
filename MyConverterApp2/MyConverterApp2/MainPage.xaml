@@ -11,6 +11,11 @@
              x:Class="MyConverterApp2.MainPage">
     <ContentPage.Resources>
         <converters:CurrencySignConverter x:Key="currencySignConverter" />
+        <converters:BoolToPinIconConverter x:Key="BoolToPinIconConverter" />
+        <converters:BoolToPinTextConverter x:Key="BoolToPinTextConverter" />
+        <converters:DateTimeToTimeSpanConverter x:Key="DateTimeToTimeSpanConverter" />
+        <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+        <converters:TimeZoneItemToIdConverter x:Key="TimeZoneItemToIdConverter" />
     </ContentPage.Resources>
 
         <VerticalStackLayout x:Name="AccordionLayout" 
@@ -197,7 +202,7 @@
                                         <Picker Grid.Column="1"
                                                 ItemDisplayBinding="{Binding DisplayName}"
                                                 ItemsSource="{Binding TimeZones}"
-                                                SelectedItem="{Binding SelectedTargetTzId, Mode=TwoWay, Converter={StaticResource TimeZoneItemToIdConverter}}"/>
+                                                SelectedItem="{Binding SelectedTimeZone, Mode=TwoWay}" />
                                         </Grid>
 
                                         <!-- Result -->
@@ -214,7 +219,7 @@
                                         </Border>
 
                                         <!-- Pin / Use Pinned -->
-                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                        <!-- <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
                                                 <Button Text="Use Pinned" 
                                                         Command="{Binding UsePinnedCommand}"
                                                         IsEnabled="{Binding PinnedTzId, Converter={StaticResource StringNotNullOrEmptyConverter}}"/>
@@ -226,7 +231,7 @@
                                                                 Command="{Binding TogglePinCommand}"
                                                                 Source="{Binding IsPinned, Converter={StaticResource BoolToPinIconConverter}}"
                                                                 BackgroundColor="Transparent" />
-                                        </Grid>   
+                                        </Grid>    -->
                                 </VerticalStackLayout>
                         </controls:ExpanderView.ExpanderContent>
             </controls:ExpanderView>
