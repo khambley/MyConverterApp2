@@ -219,10 +219,10 @@
                                         </Border>
 
                                         <!-- Pin / Use Pinned -->
-                                        <!-- <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
                                                 <Button Text="Use Pinned" 
                                                         Command="{Binding UsePinnedCommand}"
-                                                        IsEnabled="{Binding PinnedTzId, Converter={StaticResource StringNotNullOrEmptyConverter}}"/>
+                                                        IsEnabled="{Binding HasPinned}"/>
                                                 <Button Grid.Column="1"
                                                         Text="{Binding IsPinned, Converter={StaticResource BoolToPinTextConverter}}"
                                                         Command="{Binding TogglePinCommand}"/>
@@ -231,7 +231,7 @@
                                                                 Command="{Binding TogglePinCommand}"
                                                                 Source="{Binding IsPinned, Converter={StaticResource BoolToPinIconConverter}}"
                                                                 BackgroundColor="Transparent" />
-                                        </Grid>    -->
+                                        </Grid>   
                                 </VerticalStackLayout>
                         </controls:ExpanderView.ExpanderContent>
             </controls:ExpanderView>

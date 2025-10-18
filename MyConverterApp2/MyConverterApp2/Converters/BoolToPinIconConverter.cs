@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyConverterApp2.Converters
 {
-    public class BoolToPinIconConverter
+    public class BoolToPinIconConverter : IValueConverter
     {
         public ImageSource PinnedIcon { get; set; } = "ic_pin_filled.png";
         public ImageSource UnpinnedIcon { get; set; } = "ic_pin_outline.png";

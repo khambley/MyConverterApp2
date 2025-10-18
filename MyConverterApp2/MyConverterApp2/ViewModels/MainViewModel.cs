@@ -29,6 +29,14 @@ namespace MyConverterApp2.ViewModels
         [ObservableProperty] private bool isPinned;
         [ObservableProperty] private string? targetTzOffsetText;   // e.g., "UTC+1 (BST)"
 
+        public bool HasPinned => !string.IsNullOrWhiteSpace(PinnedTzId);
+
+        partial void OnPinnedTzIdChanged(string? oldValue, string? newValue)
+        {
+            OnPropertyChanged(nameof(HasPinned));
+        }
+
+
         [ObservableProperty] private Unit? unit;
 
         [ObservableProperty] string? conversionResult;

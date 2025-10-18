@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyConverterApp2.Converters
 {
-    public class TimeZoneItemToIdConverter
+    public class TimeZoneItemToIdConverter : IValueConverter
     {
         public object Convert(object value, Type t, object p, CultureInfo c)
     {

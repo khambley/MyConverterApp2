@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyConverterApp2.Converters
 {
-    public class BoolToPinTextConverter
+    public class BoolToPinTextConverter : IValueConverter
     {
         public object Convert(object value, Type t, object p, CultureInfo c)
         => value is bool b && b ? "Unpin" : "Pin";
